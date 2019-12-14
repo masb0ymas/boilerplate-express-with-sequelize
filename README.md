@@ -25,12 +25,12 @@
 
 ## Feature
 
-- Sequelize ORM v5
-- Middleware Passport
-- Node Mailer
+- [Sequelize_ORM](https://github.com/sequelize/sequelize) v5
+- Middleware [Passport](https://github.com/jaredhanson/passport)
+- [NodeMailer](https://github.com/nodemailer/nodemailer)
 - Wrapper request and reusable function in controller
-- Wrapper URL with Uno API
-- Sequelice Query in Controller
+- Wrapper URL with [Uno-API](https://github.com/chornos13/uno-api)
+- [Sequelice_Query](https://github.com/chornos13/sequelice-query) in Controller
 
 ## Install
 
