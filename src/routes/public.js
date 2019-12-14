@@ -6,8 +6,9 @@ let router = express.Router()
 const apiRouter = new UnoRouter(router)
 
 // Modules
+const AuthController = require('../controllers/AuthController')
 const RoleController = require('../controllers/RoleController')
-// const UserController = require('../controllers/UserController')
+const UserController = require('../controllers/UserController')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -15,22 +16,22 @@ router.get('/', function(req, res, next) {
 })
 
 // Authentication
-// apiRouter.create({
-//   baseURL: '/auth',
-//   postWithParam: [
-//     ['signup', UserController.signUp],
-//     ['signin', UserController.signIn],
-//   ],
-//   wrapperRequest,
-// })
+apiRouter.create({
+  baseURL: '/auth',
+  postWithParam: [
+    ['signup', AuthController.signUp],
+    ['signin', AuthController.signIn],
+  ],
+  wrapperRequest,
+})
 
-// // User
-// apiRouter.create({
-//   baseURL: '/user',
-//   get: UserController.getAll,
-//   getWithParam: [[':id', UserController.getOne]],
-//   wrapperRequest,
-// })
+// User
+apiRouter.create({
+  baseURL: '/user',
+  get: UserController.getAll,
+  getWithParam: [[':id', UserController.getOne]],
+  wrapperRequest,
+})
 
 // Master Role
 apiRouter.create({

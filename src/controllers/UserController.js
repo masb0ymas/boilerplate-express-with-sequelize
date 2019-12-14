@@ -2,6 +2,7 @@ import sQuery from 'sequelice-query'
 import { getToken } from '../helper'
 
 const models = require('../models')
+const User = models.User
 const Role = models.Role
 
 async function getAll({ req, ResponseError }) {
@@ -11,17 +12,17 @@ async function getAll({ req, ResponseError }) {
   if (!page) page = 0
   if (!pageSize) pageSize = 10
 
-  let including = []
+  let including = [{ model: Role }]
 
   let condition = await sQuery.generate({
     req,
-    model: Role,
+    model: User,
     configs: {
       include: including,
     },
   })
 
-  let data = await Role.findAll({
+  let data = await User.findAll({
     include: condition.include,
     where: condition.queryFilter,
     offset: parseInt(pageSize) * parseInt(page),
@@ -29,7 +30,7 @@ async function getAll({ req, ResponseError }) {
     order: condition.querySort,
   })
 
-  let totalRow = await Role.count({
+  let totalRow = await User.count({
     include: condition.includeCount,
     where: condition.queryFilter,
   })
@@ -43,13 +44,13 @@ async function getOne({ req, ResponseError }) {
 
   const including = []
 
-  let data = await Role.findByPk(id, {
+  let data = await User.findByPk(id, {
     include: including,
   })
-
   if (!data) {
     throw new ResponseError('Data tidak ditemukan!', 404)
   }
+
   return { data }
 }
 
@@ -59,7 +60,7 @@ async function storeData({ req, ResponseError }) {
   let { roleName } = body
 
   if (token) {
-    let insert = await Role.create({
+    let insert = await User.create({
       roleName: roleName,
     })
     return { message: 'Data sudah ditambahkan', insert }
@@ -75,7 +76,7 @@ async function updateData({ req, ResponseError }) {
   let { roleName } = body
 
   if (token) {
-    let editData = await Role.findByPk(id)
+    let editData = await User.findByPk(id)
     if (!editData) {
       throw new ResponseError('Data tidak ditemukan!', 404)
     }
@@ -95,7 +96,7 @@ async function destroyData({ req, ResponseError }) {
   const id = params.id
 
   if (token) {
-    let checkData = await Role.findByPk(id)
+    let checkData = await User.findByPk(id)
     if (!checkData) {
       throw new ResponseError('Data tidak ditemukan!', 404)
     }

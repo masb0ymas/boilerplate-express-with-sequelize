@@ -1,4 +1,7 @@
 'use strict'
+
+var bcrypt = require('bcrypt')
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
@@ -20,8 +23,30 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
+
+  // Hash password before save
+  User.beforeSave((user, options) => {
+    if (user.changed('password')) {
+      user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null)
+    }
+  })
+
+  // Compare password
+  User.prototype.comparePassword = function(candidatePassword) {
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+        if (err) reject(err)
+        resolve(isMatch)
+      })
+    })
+  }
+
   User.associate = function(models) {
     // associations can be defined here
+    User.belongsTo(models.Role, {
+      foreignKey: 'RoleId',
+      onDelete: 'CASCADE',
+    })
   }
   return User
 }

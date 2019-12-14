@@ -28,8 +28,8 @@
 - Sequelize ORM v5
 - Middleware Passport
 - Node Mailer
-- Wrapper Request and Re-usesable Function Controller
-- Wrapper URL API with Uno API
+- Wrapper request and reusable function in controller
+- Wrapper URL with Uno API
 - Sequelice Query in Controller
 
 ## Install
