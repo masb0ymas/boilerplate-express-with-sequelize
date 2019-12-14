@@ -31,7 +31,7 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "pug": "2.0.0-beta11",
+    "pug": "^2.0.4",
     "sequelice-query": "^1.0.2",
     "sequelize": "^5.21.3",
     "sequelize-cli": "^5.5.1",
