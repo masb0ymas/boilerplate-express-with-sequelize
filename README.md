@@ -75,9 +75,9 @@ yarn run serve
 👤 **masb0ymas**
 
 - Website: http://minangitcamp.com
-- Twitter: [@fajriajjha1](fajriajjha1)
+- Twitter: [@fajriajjha1](https://twitter.com/fajriajjha1)
 - Github: [@masb0ymas](https://github.com/masb0ymas)
-- LinkedIn: [@aji-ajjha](aji-ajjha-58a248b7/)
+- LinkedIn: [@aji-ajjha](https://www.linkedin.com/in/aji-ajjha-58a248b7/)
 
 ## 🤝 Contributing
 
