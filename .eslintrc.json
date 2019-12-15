@@ -7,7 +7,7 @@
   "rules": {
     "prettier/prettier": "error",
     "semi": "off",
-    "radix":"off",
+    "radix": "off",
     "func-names": "off",
     "no-console": "off",
     "no-shadow": "off",
