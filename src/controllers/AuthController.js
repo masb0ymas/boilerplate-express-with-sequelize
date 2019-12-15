@@ -1,36 +1,36 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import passport from 'passport'
-require('../config/passport')(passport)
 import 'dotenv/config'
-import { getUniqueCodev2, validationRequest } from '../helper'
+import models from '../models'
 import { ROLE } from '../config/constants'
+import { getToken, getUniqueCodev2, validationRequest } from '../helper'
 
-const models = require('../models')
-const User = models.User
-const Role = models.Role
+require('../config/passport')(passport)
 
 const jwtPass = process.env.JWT_SECRET
+// declare models
+const { User, Role } = models
 
 async function signUp({ req, ResponseError }) {
   const { body } = req
   const { fullName, email, password, phone } = body
 
-  let generateToken = {
+  const generateToken = {
     code: getUniqueCodev2(),
   }
 
-  let tokenVerify = jwt.sign(JSON.parse(JSON.stringify(generateToken)), jwtPass, {
+  const tokenVerify = jwt.sign(JSON.parse(JSON.stringify(generateToken)), jwtPass, {
     expiresIn: 86400 * 1,
   }) // 1 Days
 
   const ObjUser = {
-    fullName: fullName,
-    email: email,
-    password: password,
-    phone: phone,
+    fullName,
+    email,
+    password,
+    phone,
     RoleId: ROLE.UMUM,
-    tokenVerify: tokenVerify,
+    tokenVerify,
   }
 
   const userData = await User.create(ObjUser)
@@ -42,7 +42,7 @@ async function signIn({ req, ResponseError }) {
   const { email, password } = body
 
   const including = [{ model: Role }]
-  const condition = { email: email }
+  const condition = { email }
 
   const userData = await User.findOne({
     include: including,
@@ -54,20 +54,19 @@ async function signIn({ req, ResponseError }) {
   }
 
   if (userData.active === true) {
-    let checkPassword = await userData.comparePassword(password)
+    const checkPassword = await userData.comparePassword(password)
     if (checkPassword) {
-      let token = jwt.sign(JSON.parse(JSON.stringify(userData)), jwtPass, {
+      const token = jwt.sign(JSON.parse(JSON.stringify(userData)), jwtPass, {
         expiresIn: 86400 * 1,
       }) // 1 Days
       return {
-        token: 'JWT ' + token,
+        token: `JWT ${token}`,
         uid: userData.id,
         rid: userData.RoleId,
       }
-    } else {
-      // console.log(res)
-      throw new ResponseError('Email atau Password salah!', 401)
     }
+    // console.log(res)
+    throw new ResponseError('Email atau Password salah!', 401)
   } else {
     throw new ResponseError(
       'Please check your email account to verify your email and continue the registration process.',
@@ -89,19 +88,19 @@ async function getProfile({ req, ResponseError }) {
 async function changePass({ req, ResponseError }) {
   const { headers, body, params } = req
   const token = getToken(headers)
-  const id = params.id
+  const { id } = params
   const { currentPassword, password } = body
 
   if (token) {
     await validationRequest(body)
 
-    let editData = await User.findById(id)
+    const editData = await User.findById(id)
     if (!editData) {
       throw new ResponseError('Data tidak ditemukan!', 404)
     }
 
     if (bcrypt.compareSync(currentPassword, editData.password)) {
-      let hashPassword = bcrypt.hashSync(password, 10)
+      const hashPassword = bcrypt.hashSync(password, 10)
       await editData.updateOne({
         password: hashPassword,
       })

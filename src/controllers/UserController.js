@@ -1,9 +1,9 @@
 import sQuery from 'sequelice-query'
+import models from '../models'
 import { getToken } from '../helper'
 
-const models = require('../models')
-const User = models.User
-const Role = models.Role
+// declare models
+const { User, Role } = models
 
 async function getAll({ req, ResponseError }) {
   const { query } = req
@@ -12,9 +12,9 @@ async function getAll({ req, ResponseError }) {
   if (!page) page = 0
   if (!pageSize) pageSize = 10
 
-  let including = [{ model: Role }]
+  const including = [{ model: Role }]
 
-  let condition = await sQuery.generate({
+  const condition = await sQuery.generate({
     req,
     model: User,
     configs: {
@@ -22,7 +22,7 @@ async function getAll({ req, ResponseError }) {
     },
   })
 
-  let data = await User.findAll({
+  const data = await User.findAll({
     include: condition.include,
     where: condition.queryFilter,
     offset: parseInt(pageSize) * parseInt(page),
@@ -30,7 +30,7 @@ async function getAll({ req, ResponseError }) {
     order: condition.querySort,
   })
 
-  let totalRow = await User.count({
+  const totalRow = await User.count({
     include: condition.includeCount,
     where: condition.queryFilter,
   })
@@ -40,11 +40,11 @@ async function getAll({ req, ResponseError }) {
 
 async function getOne({ req, ResponseError }) {
   const { params } = req
-  const id = params.id
+  const { id } = params
 
   const including = []
 
-  let data = await User.findByPk(id, {
+  const data = await User.findByPk(id, {
     include: including,
   })
   if (!data) {
@@ -57,11 +57,15 @@ async function getOne({ req, ResponseError }) {
 async function storeData({ req, ResponseError }) {
   const { headers, body } = req
   const token = getToken(headers)
-  let { roleName } = body
+  const { fullName, email, password, phone, RoleId } = body
 
   if (token) {
-    let insert = await User.create({
-      roleName: roleName,
+    const insert = await User.create({
+      fullName,
+      email,
+      password,
+      phone,
+      RoleId,
     })
     return { message: 'Data sudah ditambahkan', insert }
   }
@@ -72,16 +76,21 @@ async function storeData({ req, ResponseError }) {
 async function updateData({ req, ResponseError }) {
   const { headers, body, params } = req
   const token = getToken(headers)
-  const id = params.id
-  let { roleName } = body
+  const { id } = params
+  const { fullName, email, password, phone, RoleId, active } = body
 
   if (token) {
-    let editData = await User.findByPk(id)
+    const editData = await User.findByPk(id)
     if (!editData) {
       throw new ResponseError('Data tidak ditemukan!', 404)
     }
-    let ObjDataUpdate = {
-      roleName: roleName || editData.roleName,
+    const ObjDataUpdate = {
+      fullName: fullName || editData.fullName,
+      email: email || editData.email,
+      password: password || editData.password,
+      phone: phone || editData.phone,
+      RoleId: RoleId || editData.RoleId,
+      active,
     }
     await editData.update(ObjDataUpdate)
     return { message: 'Data berhasil diperbarui' }
@@ -93,10 +102,10 @@ async function updateData({ req, ResponseError }) {
 async function destroyData({ req, ResponseError }) {
   const { headers, params } = req
   const token = getToken(headers)
-  const id = params.id
+  const { id } = params
 
   if (token) {
-    let checkData = await User.findByPk(id)
+    const checkData = await User.findByPk(id)
     if (!checkData) {
       throw new ResponseError('Data tidak ditemukan!', 404)
     }

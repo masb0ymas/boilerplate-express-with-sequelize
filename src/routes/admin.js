@@ -3,7 +3,7 @@ import passport from 'passport'
 import { Router as UnoRouter } from 'uno-api'
 import { wrapperRequest } from '../helper'
 
-let router = express.Router()
+const router = express.Router()
 const apiAdmin = new UnoRouter(router, {
   middleware: passport.authenticate('jwt', { session: false }),
 })

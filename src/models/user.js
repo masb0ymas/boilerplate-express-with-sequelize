@@ -1,6 +1,5 @@
-'use strict'
-
-var bcrypt = require('bcrypt')
+/* eslint-disable no-param-reassign */
+const bcrypt = require('bcrypt')
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
