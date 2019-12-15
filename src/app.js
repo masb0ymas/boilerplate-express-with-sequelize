@@ -5,8 +5,10 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
+import models from './models'
+import route from './routes'
 
-var app = express()
+const app = express()
 
 // view engine setup
 app.set('views', path.join(`${__dirname}/../`, 'views'))
@@ -19,8 +21,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(`${__dirname}/../`, 'public')))
 
-const model = require('./models')
-model.sequelize
+// Initial DB
+models.sequelize
   .authenticate()
   .then(() => {
     console.log('Connection has been established successfully.')
@@ -29,7 +31,7 @@ model.sequelize
     console.error('Unable to connect to the database:', err)
   })
 
-const route = require('./routes')
+// Initial Route
 app.use(route)
 
 // catch 404 and forward to error handler

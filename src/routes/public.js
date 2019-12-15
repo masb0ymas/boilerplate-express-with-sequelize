@@ -2,7 +2,7 @@ import express from 'express'
 import { Router as UnoRouter } from 'uno-api'
 import { wrapperRequest } from '../helper'
 
-let router = express.Router()
+const router = express.Router()
 const apiRouter = new UnoRouter(router)
 
 // Modules
