@@ -33,6 +33,8 @@
 - Wrapper request and reusable function in controller
 - Wrapper URL with [Uno-API](https://github.com/chornos13/uno-api)
 - [Sequelice_Query](https://github.com/chornos13/sequelice-query) in Controller
+- JavaScript Style [Airbnb-base](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base)
+- Formating code using [Prettier](https://github.com/prettier/prettier) Integration [Eslint](https://github.com/prettier/eslint-config-prettier)
 
 ## Install
 
