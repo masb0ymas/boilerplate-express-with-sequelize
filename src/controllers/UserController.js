@@ -55,9 +55,11 @@ async function getOne({ req, ResponseError }) {
 }
 
 async function storeData({ req, ResponseError }) {
-  const { headers, body } = req
+  const { headers, body, files } = req
   const token = getToken(headers)
   const { fullName, email, password, phone, RoleId } = body
+
+  console.log(files)
 
   if (token) {
     const insert = await User.create({

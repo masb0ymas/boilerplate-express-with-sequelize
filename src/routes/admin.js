@@ -2,10 +2,12 @@ import express from 'express'
 import passport from 'passport'
 import { Router as UnoRouter } from 'uno-api'
 import { wrapperRequest } from '../helper'
+import MulterMiddleware from '../middleware/Multer'
 
 const router = express.Router()
 const apiAdmin = new UnoRouter(router, {
   middleware: passport.authenticate('jwt', { session: false }),
+  wrapperRequest,
 })
 require('../config/passport')(passport)
 
@@ -13,6 +15,18 @@ require('../config/passport')(passport)
 const AuthController = require('../controllers/AuthController')
 const RoleController = require('../controllers/RoleController')
 const UserController = require('../controllers/UserController')
+
+const setupMulterDoc = MulterMiddleware.setup(
+  {
+    destination(req, file, cb) {
+      cb(null, './public/uploads/csv/')
+    },
+  },
+  null,
+  ['.csv', '.xls']
+)
+
+const multerUser = setupMulterDoc([{ name: 'phone', maxCount: 1 }])
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -23,22 +37,19 @@ router.get('/', function(req, res, next) {
 apiAdmin.create({
   baseURL: '/auth',
   putWithParam: [['change-password/:id', AuthController.changePass]],
-  wrapperRequest,
 })
 
 apiAdmin.create({
   baseURL: '/profile',
   get: AuthController.getProfile,
-  wrapperRequest,
 })
 
 // User
 apiAdmin.create({
   baseURL: '/user',
-  post: UserController.storeData,
-  putWithParam: [[':id', UserController.updateData]],
+  post: { middleware: multerUser, callback: UserController.storeData },
+  putWithParam: [[':id', multerUser, UserController.updateData]],
   deleteWithParam: [[':id', UserController.destroyData]],
-  wrapperRequest,
 })
 
 // Master Role
@@ -47,7 +58,6 @@ apiAdmin.create({
   post: RoleController.storeData,
   putWithParam: [[':id', RoleController.updateData]],
   deleteWithParam: [[':id', RoleController.destroyData]],
-  wrapperRequest,
 })
 
 module.exports = router
