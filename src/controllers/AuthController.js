@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import passport from 'passport'
+import fs from 'fs'
 import 'dotenv/config'
 import models from '../models'
 import { ROLE } from '../config/constants'
@@ -11,6 +12,16 @@ require('../config/passport')(passport)
 const jwtPass = process.env.JWT_SECRET
 // declare models
 const { User, Role } = models
+
+// create base directory
+async function createDirectory() {
+  const directoryCSV = `./public/uploads/csv`
+
+  if (!fs.existsSync(directoryCSV)) {
+    fs.mkdirSync(directoryCSV, { recursive: true })
+    console.log('created directory csv')
+  }
+}
 
 async function signUp({ req, ResponseError }) {
   const { body } = req
@@ -59,6 +70,10 @@ async function signIn({ req, ResponseError }) {
       const token = jwt.sign(JSON.parse(JSON.stringify(userData)), jwtPass, {
         expiresIn: 86400 * 1,
       }) // 1 Days
+
+      // create directory
+      await createDirectory()
+
       return {
         token: `JWT ${token}`,
         uid: userData.id,
