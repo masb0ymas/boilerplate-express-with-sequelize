@@ -9,7 +9,7 @@
   <a href="https://github.com/masb0ymas/boilerplate-express-with-sequelize/graphs/commit-activity" target="_blank">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
-  <a href="https://github.com/masb0ymas/boilerplate-express-with-sequelize/blob/master/LICENSE" target="_blank">
+  <a href="https://github.com/masb0ymas/boilerplate-express-with-sequelize/blob/master/LICENSE.md" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/github/license/masb0ymas/boilerplate-express-with-sequelize" />
   </a>
 </p>
@@ -20,8 +20,9 @@
 
 ## Prerequisites
 
-- npm >=6.10.0
-- node >=12.13.0
+- npm >= 6.10.0
+- node >= 12.13.0
+- eslint >= 6.7.2
 
 ## Feature
 
@@ -33,6 +34,8 @@
 - Wrapper request and reusable function in controller
 - Wrapper URL with [Uno-API](https://github.com/chornos13/uno-api)
 - [Sequelice_Query](https://github.com/chornos13/sequelice-query) in Controller
+- JavaScript Style [Airbnb-base](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base)
+- Formating code using [Prettier](https://github.com/prettier/prettier) Integration [Eslint](https://github.com/prettier/eslint-config-prettier)
 
 ## Install
 
@@ -92,7 +95,7 @@ Give a ⭐️ if this project helped you!
 ## 📝 License
 
 Copyright © 2019 [masb0ymas](https://github.com/masb0ymas).<br />
-This project is [MIT](https://github.com/masb0ymas/boilerplate-express-with-sequelize/blob/master/LICENSE) licensed.
+This project is [MIT](https://github.com/masb0ymas/boilerplate-express-with-sequelize/blob/master/LICENSE.md) licensed.
 
 ---
 
