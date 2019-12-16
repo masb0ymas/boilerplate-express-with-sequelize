@@ -35,7 +35,7 @@
     "sequelice-query": "^1.0.2",
     "sequelize": "^5.21.3",
     "sequelize-cli": "^5.5.1",
-    "uno-api": "1.1.2",
+    "uno-api": "1.1.3",
     "yup": "^0.27.0"
   },
   "devDependencies": {

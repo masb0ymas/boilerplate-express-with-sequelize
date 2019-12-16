@@ -26,7 +26,7 @@ const setupMulterDoc = MulterMiddleware.setup(
   ['.csv', '.xls']
 )
 
-const multerUser = setupMulterDoc([{ name: 'phone', maxCount: 1 }])
+const multerUser = setupMulterDoc([{ name: 'file', maxCount: 1 }])
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -47,7 +47,7 @@ apiAdmin.create({
 // User
 apiAdmin.create({
   baseURL: '/user',
-  post: { middleware: multerUser, callback: UserController.storeData },
+  post: [multerUser, UserController.storeData],
   putWithParam: [[':id', multerUser, UserController.updateData]],
   deleteWithParam: [[':id', UserController.destroyData]],
 })

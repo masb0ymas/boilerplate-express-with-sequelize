@@ -5053,10 +5053,10 @@ universalify@^0.1.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
   integrity sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==
 
-uno-api@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/uno-api/-/uno-api-1.1.2.tgz#7e4c51c41a7c27e2e753a69378c31273edf5c1cc"
-  integrity sha512-W/D9k1L323nGQoFZfikjMV7pdriAqWi3A/Y7rFXoVhswlFVyJnBeOyHZmWdA1nBka9Fg36d/Cnl9qF80Y1q9xw==
+uno-api@1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/uno-api/-/uno-api-1.1.3.tgz#6bb14a7193a449b846c49a3ebadaf141bf9321e9"
+  integrity sha512-wFVeztvsBQwhjv+YXTXlJ9JU/cbldJhPGWsefbIY4OxD/phEM+0QqJ1FyoJBsqweUr/WnXhzDWIATXNxlq5hHA==
 
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
