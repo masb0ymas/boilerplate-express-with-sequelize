@@ -28,7 +28,7 @@
 
 - [Sequelize_ORM](https://github.com/sequelize/sequelize) v5
 - Middleware [Passport](https://github.com/jaredhanson/passport)
-- [NodeMailer](https://github.com/nodemailer/nodemailer)
+- [Node_Mailer](https://github.com/nodemailer/nodemailer)
 - [Handlebars](https://github.com/wycats/handlebars.js) for templating HTML for email
 - [Yup](https://github.com/jquense/yup) for validation schema
 - Wrapper request and reusable function in controller
@@ -36,6 +36,7 @@
 - [Sequelice_Query](https://github.com/chornos13/sequelice-query) in Controller
 - JavaScript Style [Airbnb-base](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base)
 - Formating code using [Prettier](https://github.com/prettier/prettier) Integration [Eslint](https://github.com/prettier/eslint-config-prettier)
+- Using [Babel_Resolver](https://github.com/tleunen/babel-plugin-module-resolver) for simplify the require/import paths
 
 ## Install
 
