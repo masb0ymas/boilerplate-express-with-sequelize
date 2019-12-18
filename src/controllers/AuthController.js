@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import * as yup from 'yup'
 import passport from 'passport'
 import fs from 'fs'
 import 'dotenv/config'
@@ -35,6 +36,21 @@ async function signUp({ req, ResponseError }) {
   const tokenVerify = jwt.sign(JSON.parse(JSON.stringify(generateToken)), jwtPass, {
     expiresIn: 86400 * 1,
   }) // 1 Days
+
+  const schema = yup.object().shape({
+    fullName: yup.string().required('nama lengkap belum diisi'),
+    email: yup
+      .string()
+      .email()
+      .required('email belum diisi'),
+    password: yup
+      .string()
+      .min(8, 'password minimal 8 karakter')
+      .required('password belum diisi'),
+    Role: yup.string().required('role id belum diisi'),
+  })
+
+  await schema.validate(body)
 
   const ObjUser = {
     fullName,
