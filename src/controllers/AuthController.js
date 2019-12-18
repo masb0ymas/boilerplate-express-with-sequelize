@@ -4,6 +4,7 @@ import passport from 'passport'
 import fs from 'fs'
 import 'dotenv/config'
 import models from '../models'
+// import SendMailer from '../config/email'
 import { ROLE } from '../config/constants'
 import { getToken, getUniqueCodev2, validationRequest } from '../helper'
 
@@ -45,7 +46,23 @@ async function signUp({ req, ResponseError }) {
   }
 
   const userData = await User.create(ObjUser)
-  return { userData, message: 'Registrasi berhasil, Check email Anda untuk langkah selanjutnya!' }
+
+  // Data for Send Email
+  // const htmlTemplate = 'signUpTemplate.html'
+  // const objData = {
+  //   fullName,
+  //   token: tokenVerify,
+  // }
+  // const optMail = {
+  //   emailTo: email,
+  //   subject: 'Verifikasi Email',
+  // }
+  // SendMailer(htmlTemplate, objData, optMail)
+
+  return {
+    userData,
+    message: 'Registrasi berhasil, Check email Anda untuk langkah selanjutnya!',
+  }
 }
 
 async function signIn({ req, ResponseError }) {

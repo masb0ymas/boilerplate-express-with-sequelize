@@ -47,7 +47,7 @@ const readHTMLFile = (path, callback) => {
 // get read html file from config
 const SendMailer = (htmlTemplate, objData, optMail) => {
   readHTMLFile(
-    path.resolve(__dirname, `../../public/email_template/${htmlTemplate}.html`),
+    path.resolve(__dirname, `../../public/email_template/${htmlTemplate}`),
     (err, html) => {
       const template = handlebars.compile(html)
       const htmlToSend = template(objData)
