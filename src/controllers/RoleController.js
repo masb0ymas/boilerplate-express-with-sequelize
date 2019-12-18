@@ -1,6 +1,6 @@
 import sQuery from 'sequelice-query'
-import models from '../models'
-import { getToken } from '../helper'
+import models from '#models'
+import { getToken } from '#helper'
 
 // declare models
 const { Role } = models

@@ -5,7 +5,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
-import models from './models'
+import models from '#models'
 import route from './routes'
 
 const app = express()
