@@ -1,20 +1,20 @@
 import express from 'express'
 import passport from 'passport'
 import { Router as UnoRouter } from 'uno-api'
-import { wrapperRequest } from '../helper'
-import MulterMiddleware from '../middleware/Multer'
+import { wrapperRequest } from '#helper'
+import MulterMiddleware from '#middleware/Multer'
 
 const router = express.Router()
 const apiAdmin = new UnoRouter(router, {
   middleware: passport.authenticate('jwt', { session: false }),
   wrapperRequest,
 })
-require('../config/passport')(passport)
+require('#config/passport')(passport)
 
 // Modules
-const AuthController = require('../controllers/AuthController')
-const RoleController = require('../controllers/RoleController')
-const UserController = require('../controllers/UserController')
+const AuthController = require('#controllers/AuthController')
+const RoleController = require('#controllers/RoleController')
+const UserController = require('#controllers/UserController')
 
 const setupMulterDoc = MulterMiddleware.setup(
   {

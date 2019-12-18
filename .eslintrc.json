@@ -20,5 +20,10 @@
     "node": true,
     "es6": true,
     "commonjs": true
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
   }
 }
