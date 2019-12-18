@@ -2,7 +2,7 @@ import express from 'express'
 import passport from 'passport'
 import { Router as UnoRouter } from 'uno-api'
 import { wrapperRequest } from '#helper'
-import MulterMiddleware from '#middleware/Multer'
+import MulterMiddleware from '#middleware'
 
 const router = express.Router()
 const apiAdmin = new UnoRouter(router, {
