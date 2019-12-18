@@ -96,11 +96,11 @@ async function destroyData({ req, ResponseError }) {
   const { id } = params
 
   if (token) {
-    const checkData = await Role.findByPk(id)
-    if (!checkData) {
+    const deleteData = await Role.findByPk(id)
+    if (!deleteData) {
       throw new ResponseError('Data tidak ditemukan!', 404)
     }
-    await checkData.destroy()
+    await deleteData.destroy()
     return { message: 'Data berhasil dihapus!' }
   }
 
