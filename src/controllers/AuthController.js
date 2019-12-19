@@ -17,7 +17,7 @@ const { User, Role } = models
 
 // create base directory
 async function createDirectory() {
-  const directoryCSV = `#public/uploads/csv`
+  const directoryCSV = `./public/uploads/csv`
 
   if (!fs.existsSync(directoryCSV)) {
     fs.mkdirSync(directoryCSV, { recursive: true })

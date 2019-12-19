@@ -50,6 +50,9 @@ const setup = (
               .status(403)
               .json({ message: `Ukuran file terlalu besar, melebihi ${sizeMb} MB` })
           }
+          if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+            return res.status(403).json({ message: 'Melebihi limit files upload' })
+          }
           console.log(err)
           // formdata tipe file tidak memenuhi rules yg dibuat selain limit file
           return res.status(403).json({ message: `${'Akses ditolak!'} ${err.message}` })
