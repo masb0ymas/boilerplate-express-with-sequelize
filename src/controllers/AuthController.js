@@ -33,9 +33,13 @@ async function signUp({ req, ResponseError }) {
     code: getUniqueCodev2(),
   }
 
-  const tokenVerify = jwt.sign(JSON.parse(JSON.stringify(generateToken)), jwtPass, {
-    expiresIn: 86400 * 1,
-  }) // 1 Days
+  const tokenVerify = jwt.sign(
+    JSON.parse(JSON.stringify(generateToken)),
+    jwtPass,
+    {
+      expiresIn: 86400 * 1,
+    }
+  ) // 1 Days
 
   const schema = yup.object().shape({
     fullName: yup.string().required('nama lengkap belum diisi'),

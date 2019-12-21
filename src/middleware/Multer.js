@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import multer from 'multer'
 import path from 'path'
 
@@ -11,7 +12,7 @@ function addUploadedFilesToReq(req) {
   req.uploadedFiles = {}
   req.rawUploadedFiles = {}
   if (req.files) {
-    for (let i = 0; i < multerFields.length; i++) {
+    for (let i = 0; i < multerFields.length; i += 1) {
       const field = multerFields[i]
       const files = req.files[field.name]
       if (files) {
@@ -42,7 +43,7 @@ function addUploadedFilesToReq(req) {
 const setup = (
   diskStorageCfg,
   multerCfg,
-  allowedExt = ['.png', '.jpg', '.jpeg', '.xlsx', '.xls'],
+  allowedExt = ['.png', '.jpg', '.jpeg', '.xlsx', '.xls']
 ) => {
   // Upload CSV
   const storageUpload = multer.diskStorage({
@@ -86,7 +87,9 @@ const setup = (
             })
           }
           if (err.code === 'LIMIT_UNEXPECTED_FILE') {
-            return res.status(403).json({ message: 'Melebihi limit files upload' })
+            return res
+              .status(403)
+              .json({ message: 'Melebihi limit files upload' })
           }
           console.log(err)
           // formdata tipe file tidak memenuhi rules yg dibuat selain limit file

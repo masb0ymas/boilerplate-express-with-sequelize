@@ -21,7 +21,7 @@ function uuid(msgInvalid, required = true) {
 yup.addMethod(yup.string, 'errorsMessage', function(message, methods) {
   let custom = this
   const cMethods = methods || []
-  for (let i = 0; i < cMethods.length; i++) {
+  for (let i = 0; i < cMethods.length; i += 1) {
     const method = cMethods[i]
     custom = custom[method](message)
   }

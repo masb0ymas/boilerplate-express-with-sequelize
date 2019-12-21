@@ -4,7 +4,7 @@
     "paths": {
       "#config/*": ["./config/*"],
       "#controllers/*": ["./controllers/*"],
-      "#helper/*": ["./helper/*"],
+      "#helper/*": ["./helpers/*"],
       "#models/*": ["./models/*"],
       "#modules/*": ["./modules/*"],
       "#middleware/*": ["./middleware/*"],

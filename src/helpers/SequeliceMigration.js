@@ -7,8 +7,8 @@ exports.addColumns = (tableName, newColumns) => {
         columns.map(item =>
           queryInterface.addColumn(tableName, item.key, {
             type: item.type,
-          }),
-        ),
+          })
+        )
       )
     },
 
@@ -16,7 +16,7 @@ exports.addColumns = (tableName, newColumns) => {
       const columns = newColumns(Sequelize)
 
       return Promise.all(
-        columns.map(item => queryInterface.removeColumn(tableName, item.key)),
+        columns.map(item => queryInterface.removeColumn(tableName, item.key))
       )
     },
   }
@@ -32,9 +32,9 @@ exports.renameColumns = (tableName, newColumns) => {
           queryInterface.renameColumn(
             tableName,
             item.nameBefore,
-            item.nameAfter,
-          ),
-        ),
+            item.nameAfter
+          )
+        )
       )
     },
 
@@ -46,9 +46,9 @@ exports.renameColumns = (tableName, newColumns) => {
           queryInterface.renameColumn(
             tableName,
             item.nameAfter,
-            item.nameBefore,
-          ),
-        ),
+            item.nameBefore
+          )
+        )
       )
     },
   }

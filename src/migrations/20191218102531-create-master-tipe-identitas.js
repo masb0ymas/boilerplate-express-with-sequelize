@@ -8,5 +8,5 @@ module.exports = SequeliceMigration.createTable(
         type: DataTypes.STRING,
       },
     }
-  },
+  }
 )

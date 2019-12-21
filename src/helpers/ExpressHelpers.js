@@ -44,7 +44,8 @@ function cleanMulterFiles(req) {
   const { rawUploadedFiles } = req
   if (rawUploadedFiles) {
     const entriesFiles = Object.entries(rawUploadedFiles)
-    for (let i = 0; i < entriesFiles.length; i++) {
+    for (let i = 0; i < entriesFiles.length; i += 1) {
+      // eslint-disable-next-line no-unused-vars
       const [field, value] = entriesFiles[i]
       console.log('Removing... ', value.path)
       fs.unlinkSync(value.path)
