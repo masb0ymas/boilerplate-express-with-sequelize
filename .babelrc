@@ -9,10 +9,10 @@
         "alias": {
           "#config": "./src/config",
           "#controllers": "./src/controllers",
-          "#helper": "./src/helper",
+          "#helper": "./src/helpers",
           "#models": "./src/models",
           "#modules": "./src/modules",
-          "#middleware": "./src/middleware",
+          "#middleware": "./src/middleware"
         }
       }
     ]

@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 const invalidValues = [undefined, null, '', false]
 
 const getUniqueCode = () => {
@@ -8,7 +9,8 @@ const getUniqueCode = () => {
 
 const getUniqueCodev2 = (length = 32) => {
   let result = ''
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   const charactersLength = characters.length
   for (let i = 0; i < length; i += 1) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
@@ -31,7 +33,9 @@ const validationRequest = async params => {
   const { currentPassword, password, Phone } = params
 
   if (!invalidValues.includes(password)) {
-    const passwordStrongRegex = password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/)
+    const passwordStrongRegex = password.match(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/
+    )
 
     if (currentPassword === password) {
       throw new Error('Password baru tidak boleh sama dengan password lama!')
@@ -45,11 +49,14 @@ const validationRequest = async params => {
   }
 
   if (!invalidValues.includes(Phone)) {
-    // eslint-disable-next-line no-useless-escape
-    const phoneRegex = Phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,10}$/)
+    const phoneRegex = Phone.match(
+      /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,10}$/
+    )
 
     if (!phoneRegex) {
-      throw new Error('Nomor telepon harus angka, dan minimal 10 digit, maksimal 15 digit!')
+      throw new Error(
+        'Nomor telepon harus angka, dan minimal 10 digit, maksimal 15 digit!'
+      )
     }
   }
 }

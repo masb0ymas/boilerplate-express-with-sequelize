@@ -1,3 +1,4 @@
+import * as yup from 'yup'
 import sQuery from 'sequelice-query'
 import models from '#models'
 import { getToken } from '#helper'
@@ -60,6 +61,12 @@ async function storeData({ req, ResponseError }) {
   const { roleName } = body
 
   if (token) {
+    const schema = yup.object().shape({
+      roleName: yup.string().required('nama role belum diisi'),
+    })
+
+    await schema.validate(body)
+
     const insert = await Role.create({
       roleName,
     })
