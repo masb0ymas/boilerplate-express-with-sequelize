@@ -4,10 +4,12 @@
     "paths": {
       "#config/*": ["./config/*"],
       "#controllers/*": ["./controllers/*"],
+      "#constants/*": ["./constants/*"],
       "#helper/*": ["./helpers/*"],
       "#models/*": ["./models/*"],
       "#modules/*": ["./modules/*"],
       "#middleware/*": ["./middleware/*"],
+      "#utils/*": ["./utils/*"],
     }
   }
 }

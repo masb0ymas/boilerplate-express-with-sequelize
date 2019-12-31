@@ -1,3 +1,3 @@
-import MulterMiddleware from './Multer'
+import multerCSV from './multerCSV'
 
-export default MulterMiddleware
+export default multerCSV

@@ -2,8 +2,9 @@ import express from 'express'
 import passport from 'passport'
 import { Router as UnoRouter } from 'uno-api'
 import { wrapperRequest } from '#helper'
-import MulterMiddleware from '#middleware'
+import multerCSV from '#middleware'
 
+/* Setup Router */
 const router = express.Router()
 const apiAdmin = new UnoRouter(router, {
   middleware: passport.authenticate('jwt', { session: false }),
@@ -11,29 +12,17 @@ const apiAdmin = new UnoRouter(router, {
 })
 require('#config/passport')(passport)
 
-// Modules
+/* Declare Controller */
 const AuthController = require('#controllers/AuthController')
 const RoleController = require('#controllers/RoleController')
 const UserController = require('#controllers/UserController')
-
-const setupMulterDoc = MulterMiddleware.setup(
-  {
-    destination(req, file, cb) {
-      cb(null, './public/uploads/csv/')
-    },
-  },
-  null,
-  ['.csv', '.xls']
-)
-
-const multerUser = setupMulterDoc([{ name: 'file', maxCount: 1 }])
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' })
 })
 
-// // Authentication
+/* Authentication */
 apiAdmin.create({
   baseURL: '/auth',
   putWithParam: [['change-password/:id', AuthController.changePass]],
@@ -44,15 +33,15 @@ apiAdmin.create({
   get: AuthController.getProfile,
 })
 
-// User
+/* User */
 apiAdmin.create({
   baseURL: '/user',
-  post: [multerUser, UserController.storeData],
-  putWithParam: [[':id', multerUser, UserController.updateData]],
+  post: [multerCSV, UserController.storeData],
+  putWithParam: [[':id', multerCSV, UserController.updateData]],
   deleteWithParam: [[':id', UserController.destroyData]],
 })
 
-// Master Role
+/* Master Role */
 apiAdmin.create({
   baseURL: '/role',
   post: RoleController.storeData,

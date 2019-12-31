@@ -2,11 +2,11 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import * as yup from 'yup'
 import passport from 'passport'
-import fs from 'fs'
 import 'dotenv/config'
+import createDirNotExist from '#utils/Directory'
 import models from '#models'
 // import SendMailer from '#config/email'
-import { ROLE } from '#config/constants'
+import { ConstRoles } from '#constants'
 import { getToken, getUniqueCodev2, validationRequest } from '#helper'
 
 require('#config/passport')(passport)
@@ -15,14 +15,18 @@ const jwtPass = process.env.JWT_SECRET
 // declare models
 const { User, Role } = models
 
-// create base directory
-async function createDirectory() {
-  const directoryCSV = `./public/uploads/csv`
+/*
+  Create the main directory
+  direktori akan dibikin otomatis ketika login,
+  karna direktori ada yang menggunakan User ID
+*/
+async function createDirectory(userData) {
+  const pathDirectory = [
+    './public/uploads/csv',
+    `./public/uploads/profile/${userData.id}`,
+  ]
 
-  if (!fs.existsSync(directoryCSV)) {
-    fs.mkdirSync(directoryCSV, { recursive: true })
-    console.log('created directory csv')
-  }
+  pathDirectory.map(x => createDirNotExist(x))
 }
 
 async function signUp({ req, ResponseError }) {
@@ -61,13 +65,18 @@ async function signUp({ req, ResponseError }) {
     email,
     password,
     phone,
-    RoleId: ROLE.UMUM,
+    RoleId: ConstRoles.ID_UMUM,
     tokenVerify,
   }
 
   const userData = await User.create(ObjUser)
 
-  // Data for Send Email
+  /*
+    Example for sending email
+    fungsi SendMailer cuma mengirim params / argument yg dibutuhkan utk
+    menggunakan Node Mailer
+  */
+
   // const htmlTemplate = 'signUpTemplate.html'
   // const objData = {
   //   fullName,
@@ -109,7 +118,7 @@ async function signIn({ req, ResponseError }) {
       }) // 1 Days
 
       // create directory
-      await createDirectory()
+      await createDirectory(userData)
 
       return {
         token: `JWT ${token}`,
