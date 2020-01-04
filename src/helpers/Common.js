@@ -1,4 +1,6 @@
 /* eslint-disable no-useless-escape */
+import fs from 'fs'
+
 const invalidValues = [undefined, null, '', false]
 
 const getUniqueCode = () => {
@@ -61,4 +63,30 @@ const validationRequest = async params => {
   }
 }
 
-export { getUniqueCode, getUniqueCodev2, getToken, validationRequest }
+const removeFileUpload = pathDokumen => {
+  // check type of array
+  if (Array.isArray(pathDokumen)) {
+    for (let i = 0; i < pathDokumen.length; i += 1) {
+      const pathDir = pathDokumen[i]
+
+      const replaceDocument = pathDir.replace('/uploads', './public/uploads')
+      console.log('Removing... ', replaceDocument)
+      fs.unlinkSync(replaceDocument)
+    }
+  }
+
+  // by default string
+  if (!invalidValues.includes(pathDokumen)) {
+    const replaceDocument = pathDokumen.replace('/uploads', './public/uploads')
+    console.log('Removing... ', replaceDocument)
+    fs.unlinkSync(replaceDocument)
+  }
+}
+
+export {
+  getUniqueCode,
+  getUniqueCodev2,
+  getToken,
+  validationRequest,
+  removeFileUpload,
+}

@@ -6,6 +6,7 @@ import {
   getUniqueCodev2,
   getToken,
   validationRequest,
+  removeFileUpload,
 } from './Common'
 
 export {
@@ -15,4 +16,5 @@ export {
   getUniqueCodev2,
   getToken,
   validationRequest,
+  removeFileUpload,
 }
