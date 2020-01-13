@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-const { isObject } = require('lodash')
+const { isObject, get } = require('lodash')
 const yup = require('yup')
 const fs = require('fs')
 const { Sequelize, sequelize } = require('../models')
@@ -15,6 +15,8 @@ exports.wrapperRequest = fn => {
         req,
         ResponseError,
         buildTransaction,
+        createParams,
+        createQuery,
       })
 
       if (req.transaction) {
@@ -31,28 +33,19 @@ exports.wrapperRequest = fn => {
       }
 
       if (e instanceof ResponseError) {
-        return res
-          .status(e.statusCode)
-          .json(isObject(e.message) ? e.message : { message: e.message })
+        console.log('ERROR RESPONSE ERROR!!!')
+        return res.status(e.statusCode).json(generateErrorResponseError(e))
       }
-
       if (e instanceof yup.ValidationError) {
         console.log('ERROR YUP VALIDATION!!!')
-        const errorData = {
-          message: e.errors.join('<br/>'),
-          errors: e.inner.reduce((acc, curVal) => {
-            acc[curVal.path] = curVal.message
-            return acc
-          }, {}),
-        }
-        return res.status(400).json(errorData)
+        return res.status(400).json(generateErrorYup(e))
       }
-
       if (e instanceof Sequelize.ValidationError) {
         console.log('ERROR SEQUELIZE VALIDATION!!!')
-        return res.status(400).json({ message: e.message })
+        return res.status(400).json(generateErrorSequelize(e))
       }
       console.log(e)
+
       /*
 			 lebih logic return status code 500 karena error memang tidak dihandle
 			 dicontroller
@@ -89,6 +82,47 @@ function cleanMulterFiles(req) {
       console.log('Removing... ', value.path)
       fs.unlinkSync(value.path)
     }
+  }
+}
+
+function createParams(obj) {
+  return {
+    params: obj,
+  }
+}
+
+function createQuery(obj) {
+  return {
+    query: obj,
+  }
+}
+
+function generateErrorResponseError(e) {
+  return isObject(e.message) ? e.message : { message: e.message }
+}
+
+function generateErrorYup(e) {
+  return {
+    message: e.errors.join('<br/>'),
+    errors:
+      e.inner.length > 0
+        ? e.inner.reduce((acc, curVal) => {
+            acc[curVal.path] = curVal.message
+            return acc
+          }, {})
+        : { [e.path]: e.message },
+  }
+}
+
+function generateErrorSequelize(e) {
+  const errors = get(e, 'errors', [])
+  const errorMessage = get(errors, '0.message', null)
+  return {
+    message: errorMessage ? `Validation error: ${errorMessage}` : e.message,
+    errors: errors.reduce((acc, curVal) => {
+      acc[curVal.path] = curVal.message
+      return acc
+    }, {}),
   }
 }
 

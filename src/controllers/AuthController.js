@@ -55,7 +55,6 @@ async function signUp({ req, ResponseError }) {
       .string()
       .min(8, 'password minimal 8 karakter')
       .required('password belum diisi'),
-    Role: yup.string().required('role id belum diisi'),
   })
 
   await schema.validate(body)
