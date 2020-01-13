@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: false,
       },
-      roleName: DataTypes.STRING,
+      nama: DataTypes.STRING,
     },
     {}
   )

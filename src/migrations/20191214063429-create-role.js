@@ -7,7 +7,7 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      roleName: {
+      nama: {
         allowNull: false,
         type: Sequelize.STRING,
       },
