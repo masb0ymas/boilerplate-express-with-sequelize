@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon --exec babel-node ./src/bin/server.js",
     "build": "babel src --out-dir dist",
-    "serve": "NODE_ENV=production node ./dist/bin/server.js",
+    "serve:staging": "NODE_ENV=staging node ./dist/bin/server.js",
+    "serve:production": "NODE_ENV=production node ./dist/bin/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "masb0ymas",
@@ -35,7 +36,7 @@
     "sequelice-query": "^1.0.2",
     "sequelize": "^5.21.3",
     "sequelize-cli": "^5.5.1",
-    "uno-api": "1.1.4",
+    "uno-api": "^1.2.2",
     "yup": "^0.27.0"
   },
   "devDependencies": {
