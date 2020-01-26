@@ -2,6 +2,7 @@
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
+const sQuery = require('sequelice-query')
 
 const basename = path.basename(__filename)
 const env = process.env.NODE_ENV || 'development'
@@ -39,5 +40,24 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize
 db.Sequelize = Sequelize
+
+sQuery.generateWithPagination = async ({ req, model, configs }) => {
+  const condition = await sQuery.generate({
+    req,
+    model,
+    configs,
+  })
+
+  let { page, pageSize } = req.query
+
+  if (!page) page = 0
+  if (!pageSize) pageSize = 10
+
+  return {
+    ...condition,
+    offset: parseInt(pageSize) * parseInt(page),
+    limit: parseInt(pageSize),
+  }
+}
 
 module.exports = db

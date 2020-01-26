@@ -10,7 +10,7 @@
           "#config": "./src/config",
           "#controllers": "./src/controllers",
           "#constants": "./src/constants",
-          "#helper": "./src/helpers",
+          "#helpers": "./src/helpers",
           "#models": "./src/models",
           "#modules": "./src/modules",
           "#middleware": "./src/middleware",

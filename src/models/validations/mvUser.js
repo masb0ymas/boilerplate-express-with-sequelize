@@ -12,6 +12,7 @@ const dict = {
       phone: 'nomor ponsel belum diisi',
       newPassword: 'Password belum diisi',
       confirmNewPassword: 'Konfirmasi Password belum diisi',
+      RoleId: 'Role belum dipilih',
     },
   },
 }
@@ -24,6 +25,8 @@ const getShapeSchema = (required, language) => {
     fullName: xyup.string(msg.required.fullName),
     email: xyup.string(msg.required.email).email(msg.email.email),
     phone: xyup.string(msg.required.phone),
+    active: xyup.string(undefined, false),
+    tokenVerify: xyup.string(undefined, false),
     newPassword: xyup
       .string(msg.required.newPassword, !required)
       .min(8, 'Minimal 8 karakter')
@@ -32,7 +35,7 @@ const getShapeSchema = (required, language) => {
       .string(msg.required.confirmNewPassword, !required)
       .min(8, 'Minimal 8 karakter')
       .oneOf([yup.ref('newPassword')], 'Password tidak sama'),
-    RoleId: xyup.uuid('Role Belum Dipilih'),
+    RoleId: xyup.uuid(msg.required.RoleId),
   }
 }
 

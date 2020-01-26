@@ -1,7 +1,7 @@
 import express from 'express'
 import passport from 'passport'
 import { Router as UnoRouter } from 'uno-api'
-import { wrapperRequest } from '#helper'
+import { wrapperRequest } from '#helpers'
 import multerCSV from '#middleware'
 
 /* Setup Router */
@@ -36,17 +36,17 @@ apiAdmin.create({
 /* User */
 apiAdmin.create({
   baseURL: '/user',
-  post: [multerCSV, UserController.storeData],
-  putWithParam: [[':id', multerCSV, UserController.updateData]],
-  deleteWithParam: [[':id', UserController.destroyData]],
+  post: [multerCSV, UserController.create],
+  putWithParam: [[':id', multerCSV, UserController.update]],
+  deleteWithParam: [[':id', UserController.destroy]],
 })
 
 /* Master Role */
 apiAdmin.create({
   baseURL: '/role',
-  post: RoleController.storeData,
-  putWithParam: [[':id', RoleController.updateData]],
-  deleteWithParam: [[':id', RoleController.destroyData]],
+  post: RoleController.create,
+  putWithParam: [[':id', RoleController.update]],
+  deleteWithParam: [[':id', RoleController.destroy]],
 })
 
 module.exports = router
