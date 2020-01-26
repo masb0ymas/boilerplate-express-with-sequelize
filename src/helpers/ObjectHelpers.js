@@ -1,6 +1,6 @@
 const { cloneDeep } = require('lodash')
 
-function objAssignExceptUndefined(target, source) {
+function assignExceptUndefined(target, source) {
   let filteredObj = {}
   if (source) {
     const entriesSource = Object.entries(cloneDeep(source))
@@ -15,13 +15,23 @@ function objAssignExceptUndefined(target, source) {
   return Object.assign(target, filteredObj)
 }
 
+function assignAndValidate(targetObj, sourceObj, mvModelSchema) {
+  const formData = assignExceptUndefined(targetObj, sourceObj)
+
+  return mvModelSchema.validate(formData, {
+    stripUnknown: true,
+    abortEarly: false,
+  })
+}
+
 // console.log(
-//   objAssignExceptUndefined(
+//   assignExceptUndefined(
 //     { nama: 'heya', replace: 'asli' },
-//     { nama: undefined, replace: 'timpa' },
-//   ),
+//     { nama: undefined, replace: 'timpa' }
+//   )
 // )
 
 module.exports = {
-  objAssignExceptUndefined,
+  assignExceptUndefined,
+  assignAndValidate,
 }

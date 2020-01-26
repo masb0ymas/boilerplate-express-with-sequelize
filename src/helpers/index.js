@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/named
 import { wrapperRequest } from './ExpressHelpers'
+import ObjectHelpers from './ObjectHelpers'
 import MulterMiddleware from './Multer'
 import {
   getUniqueCode,
@@ -11,6 +12,7 @@ import {
 
 export {
   wrapperRequest,
+  ObjectHelpers,
   MulterMiddleware,
   getUniqueCode,
   getUniqueCodev2,

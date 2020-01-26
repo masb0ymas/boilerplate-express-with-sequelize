@@ -7,13 +7,15 @@ import createDirNotExist from '#utils/Directory'
 import models from '#models'
 // import SendMailer from '#config/email'
 import { ConstRoles } from '#constants'
-import { getToken, getUniqueCodev2, validationRequest } from '#helper'
+import { getToken, getUniqueCodev2, validationRequest } from '#helpers'
 
 require('#config/passport')(passport)
 
 const jwtPass = process.env.JWT_SECRET
 // declare models
 const { User, Role } = models
+
+const expiresToken = 86400 * 1 // 1 Days
 
 /*
   Create the main directory
@@ -41,7 +43,7 @@ async function signUp({ req, ResponseError }) {
     JSON.parse(JSON.stringify(generateToken)),
     jwtPass,
     {
-      expiresIn: 86400 * 1,
+      expiresIn: expiresToken,
     }
   ) // 1 Days
 
@@ -100,7 +102,7 @@ async function signIn({ req, ResponseError }) {
   const including = [{ model: Role }]
   const condition = { email }
 
-  const userData = await User.findOne({
+  const userData = await User.scope('withPassword').findOne({
     include: including,
     where: condition,
   })
@@ -113,7 +115,7 @@ async function signIn({ req, ResponseError }) {
     const checkPassword = await userData.comparePassword(password)
     if (checkPassword) {
       const token = jwt.sign(JSON.parse(JSON.stringify(userData)), jwtPass, {
-        expiresIn: 86400 * 1,
+        expiresIn: expiresToken,
       }) // 1 Days
 
       // create directory
@@ -154,7 +156,7 @@ async function changePass({ req, ResponseError }) {
   if (token) {
     await validationRequest(body)
 
-    const editData = await User.findById(id)
+    const editData = await User.scope('withPassword').findById(id)
     if (!editData) {
       throw new ResponseError('Data tidak ditemukan!', 404)
     }

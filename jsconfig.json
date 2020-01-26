@@ -5,7 +5,7 @@
       "#config/*": ["./config/*"],
       "#controllers/*": ["./controllers/*"],
       "#constants/*": ["./constants/*"],
-      "#helper/*": ["./helpers/*"],
+      "#helpers/*": ["./helpers/*"],
       "#models/*": ["./models/*"],
       "#modules/*": ["./modules/*"],
       "#middleware/*": ["./middleware/*"],
