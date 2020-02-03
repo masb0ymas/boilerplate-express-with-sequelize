@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import * as yup from 'yup'
 import passport from 'passport'
 import 'dotenv/config'
 import createDirNotExist from '#utils/Directory'
 import models from '#models'
+import mvUser from '#models/validations/mvUser'
 // import SendMailer from '#config/email'
-import { ConstRoles } from '#constants'
 import { getToken, getUniqueCodev2, validationRequest } from '#helpers'
 
 require('#config/passport')(passport)
@@ -33,7 +32,6 @@ async function createDirectory(userData) {
 
 async function signUp({ req, ResponseError }) {
   const { body } = req
-  const { fullName, email, password, phone } = body
 
   const generateToken = {
     code: getUniqueCodev2(),
@@ -47,30 +45,15 @@ async function signUp({ req, ResponseError }) {
     }
   ) // 1 Days
 
-  const schema = yup.object().shape({
-    fullName: yup.string().required('nama lengkap belum diisi'),
-    email: yup
-      .string()
-      .email()
-      .required('email belum diisi'),
-    password: yup
-      .string()
-      .min(8, 'password minimal 8 karakter')
-      .required('password belum diisi'),
+  const rawFormData = { ...body }
+  let formData = await mvUser.getCreateSchema().validate(rawFormData, {
+    stripUnknown: true,
+    abortEarly: false,
   })
 
-  await schema.validate(body)
+  formData = { ...formData, tokenVerify }
 
-  const ObjUser = {
-    fullName,
-    email,
-    password,
-    phone,
-    RoleId: ConstRoles.ID_UMUM,
-    tokenVerify,
-  }
-
-  const userData = await User.create(ObjUser)
+  const data = await User.create(formData)
 
   /*
     Example for sending email
@@ -90,7 +73,7 @@ async function signUp({ req, ResponseError }) {
   // SendMailer(htmlTemplate, objData, optMail)
 
   return {
-    userData,
+    data,
     message: 'Registrasi berhasil, Check email Anda untuk langkah selanjutnya!',
   }
 }
@@ -114,9 +97,16 @@ async function signIn({ req, ResponseError }) {
   if (userData.active === true) {
     const checkPassword = await userData.comparePassword(password)
     if (checkPassword) {
-      const token = jwt.sign(JSON.parse(JSON.stringify(userData)), jwtPass, {
-        expiresIn: expiresToken,
-      }) // 1 Days
+      const userDataJson = userData.toJSON()
+      delete userDataJson.password
+
+      const token = jwt.sign(
+        JSON.parse(JSON.stringify(userDataJson)),
+        jwtPass,
+        {
+          expiresIn: expiresToken,
+        }
+      ) // 1 Days
 
       // create directory
       await createDirectory(userData)

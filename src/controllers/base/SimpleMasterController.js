@@ -104,7 +104,7 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
       rawFormData = await configUpdate.getFormData(req)
     }
 
-    const { data } = await modelMaster.findByPk(params.id)
+    const data = await modelMaster.findByPk(params.id)
 
     const formData = await ObjectHelpers.assignAndValidate(
       data.toJSON(),
