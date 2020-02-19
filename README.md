@@ -38,43 +38,7 @@
 - Formating code using [Prettier](https://github.com/prettier/prettier) Integration [Eslint](https://github.com/prettier/eslint-config-prettier)
 - Using [Babel Resolver](https://github.com/tleunen/babel-plugin-module-resolver) for simplify the require/import paths
 
-## Install
-
-```sh
-npm install
-
-or
-
-yarn
-```
-
-## Usage
-
-```sh
-npm start
-
-or
-
-yarn start
-```
-
-## Run tests
-
-```sh
-npm run test
-
-or
-
-yarn run test
-```
-
-## Run build to start production
-
-```sh
-yarn run build
-
-yarn run serve
-```
+## [Dokumentasi](https://github.com/masb0ymas/boilerplate-express-with-sequelize/blob/master/docs/id/README.md)
 
 ## Author
 

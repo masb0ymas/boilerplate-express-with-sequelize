@@ -39,15 +39,4 @@ const getShapeSchema = (required, language) => {
   }
 }
 
-const getCreateSchema = (language = 'id') => {
-  return yup.object().shape(getShapeSchema(false, language))
-}
-
-const getUpdateSchema = (language = 'id') => {
-  return yup.object().shape(getShapeSchema(true, language))
-}
-
-module.exports = {
-  getCreateSchema,
-  getUpdateSchema,
-}
+module.exports = xyup.generateFormSchema(getShapeSchema)
