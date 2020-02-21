@@ -337,6 +337,52 @@ module.exports = {
 
 kalo kamu menulis kodingan seperti diatas, dia akan ngereplace function yang ada di `SimpleMasterController`
 
+contoh penggunaan `Sequelice Query` :
+
+```javascript
+// Controller/UserController.js
+
+const filterByRole = roleId => {
+  return ({ value }) => {
+    let curValue = value || undefined
+    if (roleId) {
+      curValue = {
+        $ne: ROLE.ID_ADMIN, // $ne ( not equal )
+      }
+    }
+
+    return curValue
+  }
+}
+
+async function getAll({ req, ResponseError }) {
+  const { roleId } = req.query
+  const condition = await sQuery.generateWithPagination({
+    req,
+    model: Stok,
+    configs: {
+      include: including,
+      optFilter: {
+        defaultValues: {
+          RoleId: '',
+        },
+        transformValueByKey: {
+          RoleId: filterByApotek(roleId),
+        },
+      },
+      optSort: {
+        defaultValues: {
+          createdAt: sQuery.Sort.DESC,
+        },
+      },
+    },
+  })
+```
+
+karna disini aku menggunakan `Sequelice Query` untuk ngehandle query `Sequelize ORM` nya, tujuannya gampang dipake dan struktur kodingan jadi lebih rapi.
+
+Penjelasan lengkap tentang [Sequelice Query](https://github.com/chornos13/sequelice-query)
+
 ## Mengatur Route
 
 Setelah kamu selesai membuat `model` dan `controller`, langkah selanjutnya kamu akan membuat `routing`, nah routing ini akan berguna nantinya saat kamu akses `endpoint route` nya, lalu endpoint route itu akan diarahkan ke `controller` yang kamu bikin.
