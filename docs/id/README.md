@@ -9,6 +9,7 @@ boilerplate express with sequelize dirancang karna pengalaman pribadi maupun tim
   - [Generate Model dari Sequelize CLI](#generate-model-dari-sequelize-cli)
   - [Model Schema Validation](#model-schema-validation)
   - [Mengatur Controller](#mengatur-controller)
+  - [Mengatur Route](#mengatur-route)
 
 # Instalasi
 
@@ -145,8 +146,6 @@ penjelasan sedikit tentang `Sequelize CLI`
 - ---name Nama_Tabel
 - ---attributes field_Tabel:type_data
 
-untuk dokumentasi lebih lengkap bisa dilihat di [Sequelize CLI](https://sequelize.org/v5/manual/migrations.html)
-
 setelah diatur migration dan model nya sesuai kebutuhan. sebagai contoh seperti ini
 
 ```javascript
@@ -212,6 +211,8 @@ setelah di atur migration nya lalu jalankan command cli
 ```bash
 npx sequelize-cli db:migrate
 ```
+
+untuk dokumentasi lebih lengkap bisa dilihat di [Sequelize CLI](https://sequelize.org/v5/manual/migrations.html)
 
 ## Model Schema Validation
 
@@ -335,3 +336,77 @@ module.exports = {
 ```
 
 kalo kamu menulis kodingan seperti diatas, dia akan ngereplace function yang ada di `SimpleMasterController`
+
+## Mengatur Route
+
+Setelah kamu selesai membuat `model` dan `controller`, langkah selanjutnya kamu akan membuat `routing`, nah routing ini akan berguna nantinya saat kamu akses `endpoint route` nya, lalu endpoint route itu akan diarahkan ke `controller` yang kamu bikin.
+
+Nah disini ada 2 routing di folder route yakni :
+- admin.js
+- public.js
+
+`public.js` itu mengatur routing yang bisa di akses langsung dari luar, seperti `http://localhost:8000/v1/master-identitas` kalo di akses lewat browser langsung dia akan ngebaca method `GET`
+
+sedangkan `admin.js` endpoint routing yang di protect oleh beberapa `middleware`, seperti `middleware auth`, `middleware multer`, dan middleware lainnya sesuai kebutuhan kamu.
+
+cara bikin global middleware pada routing seperti berikut :
+
+```javascript
+/* Setup Router */
+const router = express.Router()
+const apiAdmin = new UnoRouter(router, {
+  middleware: passport.authenticate('jwt', { session: false }),
+  wrapperRequest,
+})
+```
+
+contoh lengkap route admin.js
+
+```javascript
+// route/admin.js
+
+import express from 'express'
+import passport from 'passport'
+import { Router as UnoRouter } from 'uno-api'
+import { wrapperRequest } from '#helpers'
+import multerCSV from '#middleware'
+
+/* Setup Router */
+const router = express.Router()
+const apiAdmin = new UnoRouter(router, {
+  middleware: passport.authenticate('jwt', { session: false }),
+  wrapperRequest,
+})
+require('#config/passport')(passport)
+
+const RoleController = require('#controllers/RoleController')
+
+apiAdmin.create({
+  baseURL: '/role',
+  post: RoleController.create,
+  putWithParam: [[':id', RoleController.update]],
+  deleteWithParam: [[':id', RoleController.destroy]],
+})
+```
+
+jika kamu tidak ingin menggunakan middleware di salah satu endpoint route nya, kamu hanya perlu `OverrideMiddleware` tersebut.
+
+```javascript
+import express from 'express'
+import passport from 'passport'
+import { Router as UnoRouter } from 'uno-api'
+
+...
+
+apiAdmin.create({
+  baseURL: '/role',
+  post: RoleController.create,
+  putWithParam: [[':id', RoleController.update]],
+  deleteWithParam: [[':id', RoleController.destroy]],
+  overrideMiddleware // overrideMiddleware: true ( middleware akan non-aktif )
+})
+```
+
+secara global / by default `overrideMiddleware: false`
+
+Disini kamu hanya ngewrapping middleware ke dalam `UnoRouter`, jadi nantinya yang menggunakan `apiAdmin` udah terpasang middleware, penjelasan lebih lanjut tentang [Uno API](https://github.com/chornos13/uno-api)
