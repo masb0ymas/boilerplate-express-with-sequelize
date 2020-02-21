@@ -7,6 +7,8 @@ boilerplate express with sequelize dirancang karna pengalaman pribadi maupun tim
   - [Struktur Folder](#struktur-folder)
 - [Cara Mengggunakan Boilerplate](#cara-mengggunakan-boilerplate)
   - [Generate Model dari Sequelize CLI](#generate-model-dari-sequelize-cli)
+  - [Model Schema Validation](#model-schema-validation)
+  - [Mengatur Controller](#mengatur-controller)
 
 # Instalasi
 
@@ -148,7 +150,7 @@ untuk dokumentasi lebih lengkap bisa dilihat di [Sequelize CLI](https://sequeliz
 setelah diatur migration dan model nya sesuai kebutuhan. sebagai contoh seperti ini
 
 ```javascript
-# src/models/role.js
+// src/models/role.js
 
 module.exports = (sequelize, DataTypes) => {
   const Role = sequelize.define(
@@ -174,7 +176,7 @@ module.exports = (sequelize, DataTypes) => {
 ```
 
 ```javascript
-# src/migrations/20191214063429-create-role.js
+// src/migrations/20191214063429-create-role.js
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -211,12 +213,14 @@ setelah di atur migration nya lalu jalankan command cli
 npx sequelize-cli db:migrate
 ```
 
+## Model Schema Validation
+
 lalu sebelum masuk ke folder `src/controllers/` atur dulu model validation nya di folder `src/models/validations/`
 
 contoh penggunaan model validation:
 
 ```javascript
-# src/models/validations/mvRole.js
+// src/models/validations/mvRole.js
 
 const yup = require('yup')
 const xyup = require('./xyup')
@@ -241,6 +245,93 @@ const getShapeSchema = (required, language) => {
 module.exports = xyup.generateFormSchema(getShapeSchema)
 ```
 
+Pada `generateFormSchema` berisikan `getCreateSchema`, `getUpdateSchema` dan `getDefaultSchema`.
+
 Alasan kenapa Skema Validasi di pisah antara `getCreateSchema` dan `getUpdateSchema`.
 
 `getCreateSchema` digunakan untuk fungsi `create data` sedangkan `getUpdateSchema` digunakan untuk fungsi `update data` yang nantinya ngecek id sewaktu edit data.
+
+setelah di atur `migration`, `models` dan `modelValidation` saatnya lanjut ke folder `Controller`
+
+## Mengatur Controller
+
+pada folder controller jika kamu mau bikin controller yang bersifat simpel atau sederhana, misalkan cuma CRUD, kamu tinggal nge wrapper controller kamu ke `SimpelMasterController`. 
+
+Karna di `SimpleMasterController` sudah di atur semua, tinggal kirim parameter `models` dan `modelValidation`
+
+contoh implementasi dari `SimpleMasterController` :
+
+```javascript
+// RoleController.js
+
+import models from '../models'
+import SimpleMasterController from './base/SimpleMasterController'
+import mvRole from '../models/validations/mvRole'
+
+const { Role } = models
+
+module.exports = SimpleMasterController(Role, mvRole)
+
+```
+
+jika kamu ingin menambahkan `include Sequelize` atau custom function di controller kamu tanpa mengubah `SimpleMasterController`, yang kamu lakukan cuma nge replace function yg ada di `SimpleMasterController` atau sekedar ngatur options `configGetAll`, `configGetOne`, `configGetCreate`, ataupun `configGetUpdate`
+
+contoh mengubah options config :
+
+```javascript
+// UserController.js
+
+import models from '../models'
+import SimpleMasterController from './base/SimpleMasterController'
+import mvUser from '../models/validations/mvUser'
+
+const { Role, User } = models
+
+const including = [{ model: Role }]
+
+module.exports = SimpleMasterController(User, mvUser, {
+  configGetAll: {
+    include: including,
+  },
+  configGetOne: {
+    include: including,
+  },
+})
+
+```
+
+atau bisa juga seperti ini :
+
+```javascript
+
+import models from '../models'
+import SimpleMasterController from './base/SimpleMasterController'
+import mvUser from '../models/validations/mvUser'
+
+const { Role, User } = models
+
+const including = [{ model: Role }]
+
+const baseController = SimpleMasterController(User, mvUser, {
+  configGetAll: {
+    include: including,
+  },
+  configGetOne: {
+    include: including,
+  },
+})
+
+async function create({ req, ResponseError }) {
+  /*
+    write here...
+  */
+}
+
+module.exports = {
+  ...baseController,
+  create,
+}
+
+```
+
+kalo kamu menulis kodingan seperti diatas, dia akan ngereplace function yang ada di `SimpleMasterController`
