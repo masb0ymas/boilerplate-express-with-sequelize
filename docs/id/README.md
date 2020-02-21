@@ -7,6 +7,9 @@ boilerplate express with sequelize dirancang karna pengalaman pribadi maupun tim
   - [Struktur Folder](#struktur-folder)
 - [Cara Mengggunakan Boilerplate](#cara-mengggunakan-boilerplate)
   - [Generate Model dari Sequelize CLI](#generate-model-dari-sequelize-cli)
+  - [Model Schema Validation](#model-schema-validation)
+  - [Mengatur Controller](#mengatur-controller)
+  - [Mengatur Route](#mengatur-route)
 
 # Instalasi
 
@@ -143,12 +146,10 @@ penjelasan sedikit tentang `Sequelize CLI`
 - ---name Nama_Tabel
 - ---attributes field_Tabel:type_data
 
-untuk dokumentasi lebih lengkap bisa dilihat di [Sequelize CLI](https://sequelize.org/v5/manual/migrations.html)
-
 setelah diatur migration dan model nya sesuai kebutuhan. sebagai contoh seperti ini
 
 ```javascript
-# src/models/role.js
+// src/models/role.js
 
 module.exports = (sequelize, DataTypes) => {
   const Role = sequelize.define(
@@ -174,7 +175,7 @@ module.exports = (sequelize, DataTypes) => {
 ```
 
 ```javascript
-# src/migrations/20191214063429-create-role.js
+// src/migrations/20191214063429-create-role.js
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -211,12 +212,16 @@ setelah di atur migration nya lalu jalankan command cli
 npx sequelize-cli db:migrate
 ```
 
+untuk dokumentasi lebih lengkap bisa dilihat di [Sequelize CLI](https://sequelize.org/v5/manual/migrations.html)
+
+## Model Schema Validation
+
 lalu sebelum masuk ke folder `src/controllers/` atur dulu model validation nya di folder `src/models/validations/`
 
 contoh penggunaan model validation:
 
 ```javascript
-# src/models/validations/mvRole.js
+// src/models/validations/mvRole.js
 
 const yup = require('yup')
 const xyup = require('./xyup')
@@ -241,6 +246,167 @@ const getShapeSchema = (required, language) => {
 module.exports = xyup.generateFormSchema(getShapeSchema)
 ```
 
+Pada `generateFormSchema` berisikan `getCreateSchema`, `getUpdateSchema` dan `getDefaultSchema`.
+
 Alasan kenapa Skema Validasi di pisah antara `getCreateSchema` dan `getUpdateSchema`.
 
 `getCreateSchema` digunakan untuk fungsi `create data` sedangkan `getUpdateSchema` digunakan untuk fungsi `update data` yang nantinya ngecek id sewaktu edit data.
+
+setelah di atur `migration`, `models` dan `modelValidation` saatnya lanjut ke folder `Controller`
+
+## Mengatur Controller
+
+pada folder controller jika kamu mau bikin controller yang bersifat simpel atau sederhana, misalkan cuma CRUD, kamu tinggal nge wrapper controller kamu ke `SimpelMasterController`. 
+
+Karna di `SimpleMasterController` sudah di atur semua, tinggal kirim parameter `models` dan `modelValidation`
+
+contoh implementasi dari `SimpleMasterController` :
+
+```javascript
+// RoleController.js
+
+import models from '../models'
+import SimpleMasterController from './base/SimpleMasterController'
+import mvRole from '../models/validations/mvRole'
+
+const { Role } = models
+
+module.exports = SimpleMasterController(Role, mvRole)
+
+```
+
+jika kamu ingin menambahkan `include Sequelize` atau custom function di controller kamu tanpa mengubah `SimpleMasterController`, yang kamu lakukan cuma nge replace function yg ada di `SimpleMasterController` atau sekedar ngatur options `configGetAll`, `configGetOne`, `configGetCreate`, ataupun `configGetUpdate`
+
+contoh mengubah options config :
+
+```javascript
+// UserController.js
+
+import models from '../models'
+import SimpleMasterController from './base/SimpleMasterController'
+import mvUser from '../models/validations/mvUser'
+
+const { Role, User } = models
+
+const including = [{ model: Role }]
+
+module.exports = SimpleMasterController(User, mvUser, {
+  configGetAll: {
+    include: including,
+  },
+  configGetOne: {
+    include: including,
+  },
+})
+
+```
+
+atau bisa juga seperti ini :
+
+```javascript
+
+import models from '../models'
+import SimpleMasterController from './base/SimpleMasterController'
+import mvUser from '../models/validations/mvUser'
+
+const { Role, User } = models
+
+const including = [{ model: Role }]
+
+const baseController = SimpleMasterController(User, mvUser, {
+  configGetAll: {
+    include: including,
+  },
+  configGetOne: {
+    include: including,
+  },
+})
+
+async function create({ req, ResponseError }) {
+  /*
+    write here...
+  */
+}
+
+module.exports = {
+  ...baseController,
+  create,
+}
+
+```
+
+kalo kamu menulis kodingan seperti diatas, dia akan ngereplace function yang ada di `SimpleMasterController`
+
+## Mengatur Route
+
+Setelah kamu selesai membuat `model` dan `controller`, langkah selanjutnya kamu akan membuat `routing`, nah routing ini akan berguna nantinya saat kamu akses `endpoint route` nya, lalu endpoint route itu akan diarahkan ke `controller` yang kamu bikin.
+
+Nah disini ada 2 routing di folder route yakni :
+- admin.js
+- public.js
+
+`public.js` itu mengatur routing yang bisa di akses langsung dari luar, seperti `http://localhost:8000/v1/master-identitas` kalo di akses lewat browser langsung dia akan ngebaca method `GET`
+
+sedangkan `admin.js` endpoint routing yang di protect oleh beberapa `middleware`, seperti `middleware auth`, `middleware multer`, dan middleware lainnya sesuai kebutuhan kamu.
+
+cara bikin global middleware pada routing seperti berikut :
+
+```javascript
+/* Setup Router */
+const router = express.Router()
+const apiAdmin = new UnoRouter(router, {
+  middleware: passport.authenticate('jwt', { session: false }),
+  wrapperRequest,
+})
+```
+
+contoh lengkap route admin.js
+
+```javascript
+// route/admin.js
+
+import express from 'express'
+import passport from 'passport'
+import { Router as UnoRouter } from 'uno-api'
+import { wrapperRequest } from '#helpers'
+import multerCSV from '#middleware'
+
+/* Setup Router */
+const router = express.Router()
+const apiAdmin = new UnoRouter(router, {
+  middleware: passport.authenticate('jwt', { session: false }),
+  wrapperRequest,
+})
+require('#config/passport')(passport)
+
+const RoleController = require('#controllers/RoleController')
+
+apiAdmin.create({
+  baseURL: '/role',
+  post: RoleController.create,
+  putWithParam: [[':id', RoleController.update]],
+  deleteWithParam: [[':id', RoleController.destroy]],
+})
+```
+
+jika kamu tidak ingin menggunakan middleware di salah satu endpoint route nya, kamu hanya perlu `OverrideMiddleware` tersebut.
+
+```javascript
+import express from 'express'
+import passport from 'passport'
+import { Router as UnoRouter } from 'uno-api'
+
+...
+
+apiAdmin.create({
+  baseURL: '/role',
+  post: RoleController.create,
+  putWithParam: [[':id', RoleController.update]],
+  deleteWithParam: [[':id', RoleController.destroy]],
+  overrideMiddleware // overrideMiddleware: true ( middleware akan non-aktif )
+})
+```
+
+secara global / by default `overrideMiddleware: false`
+
+Disini kamu hanya ngewrapping middleware ke dalam `UnoRouter`, jadi nantinya yang menggunakan `apiAdmin` udah terpasang middleware, penjelasan lebih lanjut tentang [Uno API](https://github.com/chornos13/uno-api)
