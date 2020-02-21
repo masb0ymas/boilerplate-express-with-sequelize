@@ -35,6 +35,38 @@ yarn
 
 kalo tidak terinstal yarn di local komputernya bisa pake `npm install`.
 
+4. Setelah library di package.json nya sudah terinstal semua, bisa di jalankan dengan command
+
+```bash
+# running project
+
+yarn start
+```
+
+5. kalo mau di jalankan di server, sebaiknya di build terlebih dahulu.
+
+kenapa kodingannya di build, tidak disarankan kalo kodingan dalam proses development di jalankan di server ( VPS, Heroku atau sejenisnya).
+
+```bash
+# build project
+
+yarn run build
+```
+
+ketika di jalankan yarn run build, babel nya akan ngecompile kodingan dari folder `src/` ke folder `dist/` dengan standar `ES5`
+
+6. jalankan folder `dist/` mode `NODE_ENV=staging`
+
+```bash
+yarn run serve:staging
+```
+
+7. jalankan folder `dist/` mode `NODE_ENV=production`
+   
+```bash
+yarn run serve:production
+```
+
 ## Struktur Folder
 
 Struktur folder ini saya lanjutkan dari generate **express** dan **sequelize**. Serta saya mengubah sedikit struktur folder di awal yang sekarang berada di folder `src`.
