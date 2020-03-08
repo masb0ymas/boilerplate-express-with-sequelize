@@ -4,7 +4,7 @@ import { wrapperRequest } from '#helpers'
 
 /* Setup Router */
 const router = express.Router()
-const apiRouter = new UnoRouter(router, {
+const apiPublic = new UnoRouter(router, {
   wrapperRequest,
 })
 
@@ -13,13 +13,8 @@ const AuthController = require('#controllers/AuthController')
 const RoleController = require('#controllers/RoleController')
 const UserController = require('#controllers/UserController')
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' })
-})
-
 /* Authentication */
-apiRouter.create({
+apiPublic.create({
   baseURL: '/auth',
   postWithParam: [
     ['signup', AuthController.signUp],
@@ -28,14 +23,14 @@ apiRouter.create({
 })
 
 /* User */
-apiRouter.create({
+apiPublic.create({
   baseURL: '/user',
   get: UserController.getAll,
   getWithParam: [[':id', UserController.getOne]],
 })
 
 /* Master Role */
-apiRouter.create({
+apiPublic.create({
   baseURL: '/role',
   get: RoleController.getAll,
   getWithParam: [[':id', RoleController.getOne]],
