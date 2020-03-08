@@ -4,9 +4,9 @@ import { Router as UnoRouter } from 'uno-api'
 import { wrapperRequest } from '#helpers'
 import multerCSV from '#middleware'
 
-/* Setup Router */
+/* Setup Router With Middleware */
 const router = express.Router()
-const apiAdmin = new UnoRouter(router, {
+const apiPrivate = new UnoRouter(router, {
   middleware: passport.authenticate('jwt', { session: false }),
   wrapperRequest,
 })
@@ -17,24 +17,19 @@ const AuthController = require('#controllers/AuthController')
 const RoleController = require('#controllers/RoleController')
 const UserController = require('#controllers/UserController')
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' })
-})
-
 /* Authentication */
-apiAdmin.create({
+apiPrivate.create({
   baseURL: '/auth',
   putWithParam: [['change-password/:id', AuthController.changePass]],
 })
 
-apiAdmin.create({
+apiPrivate.create({
   baseURL: '/profile',
   get: AuthController.getProfile,
 })
 
 /* User */
-apiAdmin.create({
+apiPrivate.create({
   baseURL: '/user',
   post: [multerCSV, UserController.create],
   putWithParam: [[':id', multerCSV, UserController.update]],
@@ -42,7 +37,7 @@ apiAdmin.create({
 })
 
 /* Master Role */
-apiAdmin.create({
+apiPrivate.create({
   baseURL: '/role',
   post: RoleController.create,
   putWithParam: [[':id', RoleController.update]],
