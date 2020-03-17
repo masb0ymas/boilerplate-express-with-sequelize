@@ -24,4 +24,13 @@ router.get('/v1', function(req, res, next) {
 router.use('/v1', PublicRoute)
 router.use('/v1', PrivateRoute)
 
+/* Not Found Page. */
+router.get('*', function(req, res, next) {
+  res.render('index', {
+    title: 'Oops, Halaman tidak ditemukan!',
+    description: 'Not Found',
+    code: '404',
+  })
+})
+
 module.exports = router
