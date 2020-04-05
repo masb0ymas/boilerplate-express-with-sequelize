@@ -1,24 +1,12 @@
+const { Type } = require('./helpers/MigrationHelpers')
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Roles', {
-      id: {
-        allowNull: false,
-        primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-      },
-      nama: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
+      id: Type.primaryKeyUUID(true),
+      nama: Type.string(true),
+      createdAt: Type.date(true),
+      updatedAt: Type.date(true),
     })
   },
   down: (queryInterface, Sequelize) => {

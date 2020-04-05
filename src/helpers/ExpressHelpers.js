@@ -2,7 +2,24 @@
 const { isObject, get } = require('lodash')
 const yup = require('yup')
 const fs = require('fs')
+const {
+  ResponseError,
+  NotFoundError,
+  ForbiddenError,
+  BadRequestError,
+  UnauthorizedError,
+} = require('../modules/ResponseError')
 const { Sequelize, sequelize } = require('../models')
+
+const WRAPPER_GLOBAL_CONTEXT = {
+  ResponseError,
+  NotFoundError,
+  ForbiddenError,
+  BadRequestError,
+  UnauthorizedError,
+  createParams,
+  createQuery,
+}
 
 exports.wrapperRequest = fn => {
   return async (req, res) => {
@@ -11,13 +28,13 @@ exports.wrapperRequest = fn => {
         return createTransaction(req)
       }
 
-      const data = await fn({
+      const context = {
         req,
-        ResponseError,
         buildTransaction,
-        createParams,
-        createQuery,
-      })
+        ...WRAPPER_GLOBAL_CONTEXT,
+      }
+
+      const data = await fn(context)
 
       if (req.transaction) {
         console.log('Auto commit transaction...')
@@ -101,35 +118,36 @@ function generateErrorResponseError(e) {
   return isObject(e.message) ? e.message : { message: e.message }
 }
 
-function generateErrorYup(e) {
-  return {
-    message: e.errors.join('<br/>'),
+function generateErrorYup(e, req) {
+  const prefix = req.prefixErrorYup ? `${req.prefixErrorYup}.` : ''
+  const error = {
+    message: e.errors.join('<br/>') || 'Yup Validation Error !',
     errors:
       e.inner.length > 0
         ? e.inner.reduce((acc, curVal) => {
-            acc[curVal.path] = curVal.message
+            acc[`${prefix}${curVal.path}`] = curVal.message || curVal.type
             return acc
           }, {})
-        : { [e.path]: e.message },
+        : { [`${prefix}${e.path}`]: e.message || e.type },
   }
+  console.log(error.message.replace(/<br\/>/g, '\n'))
+  console.log(error.errors)
+  return error
 }
 
 function generateErrorSequelize(e) {
   const errors = get(e, 'errors', [])
   const errorMessage = get(errors, '0.message', null)
-  return {
+
+  const dataError = {
     message: errorMessage ? `Validation error: ${errorMessage}` : e.message,
     errors: errors.reduce((acc, curVal) => {
       acc[curVal.path] = curVal.message
       return acc
     }, {}),
   }
-}
 
-class ResponseError extends Error {
-  constructor(message, statusCode = 500) {
-    super(message)
-    this.message = message
-    this.statusCode = statusCode
-  }
+  console.log(dataError.message, dataError.errors)
+
+  return dataError
 }
