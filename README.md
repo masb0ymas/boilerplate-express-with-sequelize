@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to boilerplate-express-with-sequelize 👋</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.0.1-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.7-blue.svg?cacheSeconds=2592000" />
   <img src="https://img.shields.io/badge/npm-%3E%3D6.10.0-blue.svg" />
   <img src="https://img.shields.io/badge/node-%3E%3D12.13.0-blue.svg" />
   <a href="https://github.com/masb0ymas/boilerplate-express-with-sequelize#readme" target="_blank">
@@ -26,55 +26,19 @@
 
 ## Feature
 
-- [Sequelize_ORM](https://github.com/sequelize/sequelize) v5
+- [Sequelize ORM](https://github.com/sequelize/sequelize) v5
 - Middleware [Passport](https://github.com/jaredhanson/passport)
-- [Node_Mailer](https://github.com/nodemailer/nodemailer)
+- [Nodemailer](https://github.com/nodemailer/nodemailer)
 - [Handlebars](https://github.com/wycats/handlebars.js) for templating HTML for email
 - [Yup](https://github.com/jquense/yup) for validation schema
 - Wrapper request and reusable function in controller
-- Wrapper URL with [Uno-API](https://github.com/chornos13/uno-api)
-- [Sequelice_Query](https://github.com/chornos13/sequelice-query) in Controller
-- JavaScript Style [Airbnb-base](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base)
+- Wrapper URL with [Uno API](https://github.com/chornos13/uno-api)
+- [Sequelice Query](https://github.com/chornos13/sequelice-query) in Controller
+- JavaScript Style [Airbnb Base](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base)
 - Formating code using [Prettier](https://github.com/prettier/prettier) Integration [Eslint](https://github.com/prettier/eslint-config-prettier)
-- Using [Babel_Resolver](https://github.com/tleunen/babel-plugin-module-resolver) for simplify the require/import paths
+- Using [Babel Resolver](https://github.com/tleunen/babel-plugin-module-resolver) for simplify the require/import paths
 
-## Install
-
-```sh
-npm install
-
-or
-
-yarn
-```
-
-## Usage
-
-```sh
-npm start
-
-or
-
-yarn start
-```
-
-## Run tests
-
-```sh
-npm run test
-
-or
-
-yarn run test
-```
-
-## Run build to start production
-
-```sh
-yarn run build
-
-yarn run serve
-```
+## [Dokumentasi](https://github.com/masb0ymas/boilerplate-express-with-sequelize/blob/master/docs/id/README.md)
 
 ## Author
 

@@ -3,13 +3,13 @@ const moment = require('moment')
 exports.createSeedData = (
   tableName,
   listData,
-  arrColumnsDate = ['createdAt', 'updatedAt'],
+  arrColumnsDate = ['createdAt', 'updatedAt']
 ) => {
   return {
     up: (queryInterface, Sequelize) => {
       const data = listData.map(x => {
         const item = { ...x }
-        for (let i = 0; i < arrColumnsDate.length; i++) {
+        for (let i = 0; i < arrColumnsDate.length; i += 1) {
           const columnDate = arrColumnsDate[i]
           item[columnDate] = moment(item[columnDate] || 0).toDate()
         }
@@ -25,7 +25,7 @@ exports.createSeedData = (
       return queryInterface.bulkDelete(
         tableName,
         { id: listData.map(x => x.id) },
-        {},
+        {}
       )
     },
   }

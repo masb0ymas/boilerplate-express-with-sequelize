@@ -9,10 +9,12 @@
         "alias": {
           "#config": "./src/config",
           "#controllers": "./src/controllers",
-          "#helper": "./src/helper",
+          "#constants": "./src/constants",
+          "#helpers": "./src/helpers",
           "#models": "./src/models",
           "#modules": "./src/modules",
           "#middleware": "./src/middleware",
+          "#utils": "./src/utils"
         }
       }
     ]

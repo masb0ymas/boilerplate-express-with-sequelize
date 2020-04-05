@@ -1,13 +1,12 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import * as yup from 'yup'
 import passport from 'passport'
-import fs from 'fs'
 import 'dotenv/config'
+import createDirNotExist from '#utils/Directory'
 import models from '#models'
+import mvUser from '#models/validations/mvUser'
 // import SendMailer from '#config/email'
-import { ROLE } from '#config/constants'
-import { getToken, getUniqueCodev2, validationRequest } from '#helper'
+import { getToken, getUniqueCodev2, validationRequest } from '#helpers'
 
 require('#config/passport')(passport)
 
@@ -15,55 +14,53 @@ const jwtPass = process.env.JWT_SECRET
 // declare models
 const { User, Role } = models
 
-// create base directory
-async function createDirectory() {
-  const directoryCSV = `./public/uploads/csv`
+const expiresToken = 86400 * 1 // 1 Days
 
-  if (!fs.existsSync(directoryCSV)) {
-    fs.mkdirSync(directoryCSV, { recursive: true })
-    console.log('created directory csv')
-  }
+/*
+  Create the main directory
+  direktori akan dibikin otomatis ketika login,
+  karna direktori ada yang menggunakan User ID
+*/
+async function createDirectory(userData) {
+  const pathDirectory = [
+    './public/uploads/csv',
+    `./public/uploads/profile/${userData.id}`,
+  ]
+
+  pathDirectory.map(x => createDirNotExist(x))
 }
 
 async function signUp({ req, ResponseError }) {
   const { body } = req
-  const { fullName, email, password, phone } = body
 
   const generateToken = {
     code: getUniqueCodev2(),
   }
 
-  const tokenVerify = jwt.sign(JSON.parse(JSON.stringify(generateToken)), jwtPass, {
-    expiresIn: 86400 * 1,
-  }) // 1 Days
+  const tokenVerify = jwt.sign(
+    JSON.parse(JSON.stringify(generateToken)),
+    jwtPass,
+    {
+      expiresIn: expiresToken,
+    }
+  ) // 1 Days
 
-  const schema = yup.object().shape({
-    fullName: yup.string().required('nama lengkap belum diisi'),
-    email: yup
-      .string()
-      .email()
-      .required('email belum diisi'),
-    password: yup
-      .string()
-      .min(8, 'password minimal 8 karakter')
-      .required('password belum diisi'),
-    Role: yup.string().required('role id belum diisi'),
+  const rawFormData = { ...body }
+  let formData = await mvUser.getCreateSchema().validate(rawFormData, {
+    stripUnknown: true,
+    abortEarly: false,
   })
 
-  await schema.validate(body)
+  formData = { ...formData, tokenVerify }
 
-  const ObjUser = {
-    fullName,
-    email,
-    password,
-    phone,
-    RoleId: ROLE.UMUM,
-    tokenVerify,
-  }
+  const data = await User.create(formData)
 
-  const userData = await User.create(ObjUser)
+  /*
+    Example for sending email
+    fungsi SendMailer cuma mengirim params / argument yg dibutuhkan utk
+    menggunakan Node Mailer
+  */
 
-  // Data for Send Email
   // const htmlTemplate = 'signUpTemplate.html'
   // const objData = {
   //   fullName,
@@ -76,7 +73,7 @@ async function signUp({ req, ResponseError }) {
   // SendMailer(htmlTemplate, objData, optMail)
 
   return {
-    userData,
+    data,
     message: 'Registrasi berhasil, Check email Anda untuk langkah selanjutnya!',
   }
 }
@@ -88,7 +85,7 @@ async function signIn({ req, ResponseError }) {
   const including = [{ model: Role }]
   const condition = { email }
 
-  const userData = await User.findOne({
+  const userData = await User.scope('withPassword').findOne({
     include: including,
     where: condition,
   })
@@ -100,12 +97,19 @@ async function signIn({ req, ResponseError }) {
   if (userData.active === true) {
     const checkPassword = await userData.comparePassword(password)
     if (checkPassword) {
-      const token = jwt.sign(JSON.parse(JSON.stringify(userData)), jwtPass, {
-        expiresIn: 86400 * 1,
-      }) // 1 Days
+      const userDataJson = userData.toJSON()
+      delete userDataJson.password
+
+      const token = jwt.sign(
+        JSON.parse(JSON.stringify(userDataJson)),
+        jwtPass,
+        {
+          expiresIn: expiresToken,
+        }
+      ) // 1 Days
 
       // create directory
-      await createDirectory()
+      await createDirectory(userData)
 
       return {
         token: `JWT ${token}`,
@@ -142,7 +146,7 @@ async function changePass({ req, ResponseError }) {
   if (token) {
     await validationRequest(body)
 
-    const editData = await User.findById(id)
+    const editData = await User.scope('withPassword').findById(id)
     if (!editData) {
       throw new ResponseError('Data tidak ditemukan!', 404)
     }
