@@ -5,7 +5,8 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
-import models from './models'
+import helmet from 'helmet'
+import models from '#models'
 import route from './routes'
 
 const app = express()
@@ -14,6 +15,7 @@ const app = express()
 app.set('views', path.join(`${__dirname}/../`, 'views'))
 app.set('view engine', 'pug')
 
+app.use(helmet())
 app.all('*', cors()) // allow middleware cors
 app.use(logger('dev'))
 app.use(bodyParser.json())
