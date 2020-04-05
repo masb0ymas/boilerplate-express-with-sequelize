@@ -2,6 +2,7 @@
 /* eslint-disable max-classes-per-file */
 const yup = require('yup')
 const moment = require('moment')
+const { isFunction } = require('lodash')
 
 function CreateId(baseSchema, msgInvalid, required) {
   if (required) {
@@ -68,7 +69,11 @@ class Mixed {
         return [
           keys,
           (val, schema) => {
-            return val ? newSchema : schema
+            let curNewSchema = newSchema
+            if (isFunction(newSchema)) {
+              curNewSchema = newSchema(schema)
+            }
+            return val ? curNewSchema : schema
           },
         ]
       },
@@ -88,33 +93,107 @@ class Mixed {
 
 class Date {
   static get Test() {
+    const baseCompareDate = (
+      fnName,
+      key,
+      errorMessage,
+      options = {
+        formatString: undefined,
+        unitOfTime: 'second',
+        name: 'is-greater',
+        defaultErrorMessage: `\${path} should be same or greater`,
+      },
+    ) => {
+      const { formatString, unitOfTime, defaultErrorMessage, name } = options
+      return [
+        name,
+        errorMessage || defaultErrorMessage,
+        function(value) {
+          return moment(value, formatString)[fnName](
+            moment(this.parent[key], formatString),
+            unitOfTime,
+          )
+        },
+      ]
+    }
+
     return {
-      isGreater(key, msg) {
-        return [
-          'is-greater',
-          msg || `\${path} should be greater`,
-          function(value) {
-            return moment(value, 'HH:mm').isSameOrAfter(
-              moment(this.parent[key], 'HH:mm')
-            )
-          },
-        ]
+      // formatString: ex HH:mm
+
+      shouldSameOrBefore(
+        key,
+        errorMessage,
+        options = {
+          formatString: undefined,
+          unitOfTime: 'second',
+        },
+      ) {
+        return baseCompareDate('isSameOrBefore', key, errorMessage, {
+          ...options,
+          name: 'shouldSameOrBefore',
+          defaultErrorMessage: `\${path} should be same or less`,
+        })
+      },
+
+      shouldSameOrAfter(
+        key,
+        errorMessage,
+        options = {
+          formatString: undefined,
+          unitOfTime: 'second',
+        },
+      ) {
+        return baseCompareDate('isSameOrAfter', key, errorMessage, {
+          ...options,
+          name: 'shouldSameOrAfter',
+          defaultErrorMessage: `\${path} should be same or greater`,
+        })
+      }, //formatString: ex HH:mm
+
+      shouldBefore(
+        key,
+        errorMessage,
+        options = {
+          formatString: undefined,
+          unitOfTime: 'second',
+        },
+      ) {
+        return baseCompareDate('isBefore', key, errorMessage, {
+          ...options,
+          name: 'shouldBefore',
+          defaultErrorMessage: `\${path} should be less`,
+        })
+      },
+
+      shouldAfter(
+        key,
+        errorMessage,
+        options = {
+          formatString: undefined,
+          unitOfTime: 'second',
+        },
+      ) {
+        return baseCompareDate('isAfter', key, errorMessage, {
+          ...options,
+          name: 'shouldAfter',
+          defaultErrorMessage: `\${path} should be greater`,
+        })
       },
     }
   }
 
   static get When() {
     return {
-      before(key, msg) {
+      before(key, errorMessage) {
         return [
           key,
           (st, schema) => {
             return schema.min(
               st,
-              msg ||
-                `\${path} field must be later than ${moment(st).format(
-                  'DD-MM-YYYY'
-                )}`
+              errorMessage ||
+              `\${path} field must be later than ${moment(st).format(
+                'DD-MM-YYYY',
+              )}`,
             )
           },
         ]
@@ -149,6 +228,18 @@ function generateFormSchema(getShapeSchema) {
   }
 }
 
+class Type {
+  static email(message) {
+    return yup.string().email(message)
+  }
+
+  static phoneNumber(message) {
+    return yup
+      .string()
+      .test('len', message, val => val && val.toString().length >= 8)
+  }
+}
+
 module.exports = {
   id,
   uuid,
@@ -158,5 +249,6 @@ module.exports = {
   mixed,
   Date,
   Mixed,
+  Type,
   generateFormSchema,
 }
