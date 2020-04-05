@@ -1,4 +1,3 @@
-/* eslint-disable prefer-destructuring */
 import multer from 'multer'
 import path from 'path'
 
@@ -15,6 +14,8 @@ function addUploadedFilesToReq(req) {
     for (let i = 0; i < multerFields.length; i += 1) {
       const field = multerFields[i]
       const files = req.files[field.name]
+      // delete req body field name to prevent user input from body
+      delete req.body[field.name]
       if (files) {
         if (field.maxCount > 1) {
           /*
@@ -85,11 +86,6 @@ const setup = (
             return res.status(403).json({
               message: `Ukuran file terlalu besar, melebihi ${sizeMb} MB`,
             })
-          }
-          if (err.code === 'LIMIT_UNEXPECTED_FILE') {
-            return res
-              .status(403)
-              .json({ message: 'Melebihi limit files upload' })
           }
           console.log(err)
           // formdata tipe file tidak memenuhi rules yg dibuat selain limit file
