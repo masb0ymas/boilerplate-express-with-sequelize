@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import multer from 'multer'
 import path from 'path'
 

@@ -102,7 +102,7 @@ class Date {
         unitOfTime: 'second',
         name: 'is-greater',
         defaultErrorMessage: `\${path} should be same or greater`,
-      },
+      }
     ) => {
       const { formatString, unitOfTime, defaultErrorMessage, name } = options
       return [
@@ -111,7 +111,7 @@ class Date {
         function(value) {
           return moment(value, formatString)[fnName](
             moment(this.parent[key], formatString),
-            unitOfTime,
+            unitOfTime
           )
         },
       ]
@@ -126,7 +126,7 @@ class Date {
         options = {
           formatString: undefined,
           unitOfTime: 'second',
-        },
+        }
       ) {
         return baseCompareDate('isSameOrBefore', key, errorMessage, {
           ...options,
@@ -141,14 +141,14 @@ class Date {
         options = {
           formatString: undefined,
           unitOfTime: 'second',
-        },
+        }
       ) {
         return baseCompareDate('isSameOrAfter', key, errorMessage, {
           ...options,
           name: 'shouldSameOrAfter',
           defaultErrorMessage: `\${path} should be same or greater`,
         })
-      }, //formatString: ex HH:mm
+      }, // formatString: ex HH:mm
 
       shouldBefore(
         key,
@@ -156,7 +156,7 @@ class Date {
         options = {
           formatString: undefined,
           unitOfTime: 'second',
-        },
+        }
       ) {
         return baseCompareDate('isBefore', key, errorMessage, {
           ...options,
@@ -171,7 +171,7 @@ class Date {
         options = {
           formatString: undefined,
           unitOfTime: 'second',
-        },
+        }
       ) {
         return baseCompareDate('isAfter', key, errorMessage, {
           ...options,
@@ -191,9 +191,9 @@ class Date {
             return schema.min(
               st,
               errorMessage ||
-              `\${path} field must be later than ${moment(st).format(
-                'DD-MM-YYYY',
-              )}`,
+                `\${path} field must be later than ${moment(st).format(
+                  'DD-MM-YYYY'
+                )}`
             )
           },
         ]

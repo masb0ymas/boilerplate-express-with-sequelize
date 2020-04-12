@@ -131,7 +131,11 @@ async function getProfile({ req, ResponseError }) {
   const { headers } = req
   const token = getToken(headers)
   if (token) {
-    return jwt.decode(token)
+    const decodeToken = jwt.decode(token)
+    const including = [{ model: Role }]
+
+    const dataUser = await User.findByPk(decodeToken.id, { include: including })
+    return { data: dataUser }
   }
 
   throw new ResponseError('Unauthorized. Please Re-login...', 403)
