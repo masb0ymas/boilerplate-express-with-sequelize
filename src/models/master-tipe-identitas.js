@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         plural: 'MasterTipeIdentitases',
         singular: 'MasterTipeIdentitas',
       },
-      ...ConstModel.DEFAULT_SCOPE_NO_TIMESTAMP,
+      // ...ConstModel.DEFAULT_SCOPE_NO_TIMESTAMP,
     }
   );
   MasterTipeIdentitas.associate = function(models) {
