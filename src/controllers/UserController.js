@@ -1,10 +1,10 @@
-import models from '../models'
-import SimpleMasterController from './base/SimpleMasterController'
-import mvUser from '../models/validations/mvUser'
+import models from '../models';
+import SimpleMasterController from './base/SimpleMasterController';
+import mvUser from '../models/validations/mvUser';
 
-const { Role, User } = models
+const { Role, User } = models;
 
-const including = [{ model: Role }]
+const including = [{ model: Role }];
 
 module.exports = SimpleMasterController(User, mvUser, {
   configGetAll: {
@@ -13,4 +13,4 @@ module.exports = SimpleMasterController(User, mvUser, {
   configGetOne: {
     include: including,
   },
-})
+});

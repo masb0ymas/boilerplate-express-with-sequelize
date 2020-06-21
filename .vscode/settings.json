@@ -1,8 +1,7 @@
-[
-  {
-    "editor.formatOnSave": true,
-    "editor.action.formatDocument": "true",
-    "eslint.autoFixOnSave": true,
-    "prettier.eslintIntegration": true
+{
+  // "eslint.autoFixOnSave": true,
+  "eslint.alwaysShowStatus": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
   }
-]
+}

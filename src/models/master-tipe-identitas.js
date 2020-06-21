@@ -1,6 +1,6 @@
-const ConstModel = require('../constants/ConstModel')
-const { getAttributesFrom } = require('../migrations/helpers/MigrationHelpers')
-const migration1 = require('../migrations/20191218102531-create-master-tipe-identitas')
+const ConstModel = require('../constants/ConstModel');
+const { getAttributesFrom } = require('../migrations/helpers/MigrationHelpers');
+const migration1 = require('../migrations/20191218102531-create-master-tipe-identitas');
 
 /*
  order your migration from first to last
@@ -18,7 +18,7 @@ const attributes = getAttributesFrom([
   {
     create: migration1,
   },
-])
+]);
 
 module.exports = (sequelize, DataTypes) => {
   const MasterTipeIdentitas = sequelize.define(
@@ -42,9 +42,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       ...ConstModel.DEFAULT_SCOPE_NO_TIMESTAMP,
     }
-  )
+  );
   MasterTipeIdentitas.associate = function(models) {
     // associations can be defined here
-  }
-  return MasterTipeIdentitas
-}
+  };
+  return MasterTipeIdentitas;
+};

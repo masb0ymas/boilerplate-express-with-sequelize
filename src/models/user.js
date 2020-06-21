@@ -1,17 +1,17 @@
 /* eslint-disable no-param-reassign */
-const bcrypt = require('bcrypt')
-const mvUser = require('./validations/mvUser')
-const SequelizeHelpers = require('../helpers/SequelizeHelpers')
+const bcrypt = require('bcrypt');
+const mvUser = require('./validations/mvUser');
+const SequelizeHelpers = require('../helpers/SequelizeHelpers');
 
 function setUserPassword(instance) {
-  const { newPassword, confirmNewPassword } = instance
-  const fdPassword = { newPassword, confirmNewPassword }
+  const { newPassword, confirmNewPassword } = instance;
+  const fdPassword = { newPassword, confirmNewPassword };
   const validPassword = mvUser
     .getCreateSchema()
-    .validateSyncAt('confirmNewPassword', fdPassword)
-  const saltRounds = 10
-  const hash = bcrypt.hashSync(validPassword, saltRounds)
-  instance.setDataValue('password', hash)
+    .validateSyncAt('confirmNewPassword', fdPassword);
+  const saltRounds = 10;
+  const hash = bcrypt.hashSync(validPassword, saltRounds);
+  instance.setDataValue('password', hash);
 }
 
 module.exports = (sequelize, DataTypes) => {
@@ -59,29 +59,29 @@ module.exports = (sequelize, DataTypes) => {
     {
       validate: {
         async isMasterValid() {
-          const { Role } = sequelize.models
+          const { Role } = sequelize.models;
 
-          const masterValidations = [[Role, this.RoleId, 'Role']]
+          const masterValidations = [[Role, this.RoleId, 'Role']];
 
           for (let i = 0; i < masterValidations.length; i += 1) {
-            const [model, id, str] = masterValidations[i]
+            const [model, id, str] = masterValidations[i];
             // eslint-disable-next-line no-await-in-loop
             await SequelizeHelpers.throwIfNotExist(
               model,
               id,
               `Invalid data ${str}`
-            )
+            );
           }
         },
       },
       hooks: {
         beforeCreate(instance) {
-          setUserPassword(instance)
+          setUserPassword(instance);
         },
         beforeUpdate(instance) {
-          const { newPassword, confirmNewPassword } = instance
+          const { newPassword, confirmNewPassword } = instance;
           if (newPassword || confirmNewPassword) {
-            setUserPassword(instance)
+            setUserPassword(instance);
           }
         },
       },
@@ -96,23 +96,23 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     }
-  )
+  );
 
   // Compare password
   User.prototype.comparePassword = function(candidatePassword) {
     return new Promise((resolve, reject) => {
       bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-        if (err) reject(err)
-        resolve(isMatch)
-      })
-    })
-  }
+        if (err) reject(err);
+        resolve(isMatch);
+      });
+    });
+  };
 
   User.associate = function(models) {
     // associations can be defined here
     User.belongsTo(models.Role, {
       foreignKey: 'RoleId',
-    })
-  }
-  return User
-}
+    });
+  };
+  return User;
+};

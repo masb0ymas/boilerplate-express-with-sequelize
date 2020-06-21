@@ -4,12 +4,12 @@ async function throwIfNotExist(model, id, message, options) {
       id,
     },
     ...(options || {}),
-  }
+  };
   const data = await model.findOne({
     ...curOptions,
-  })
+  });
   if (!data) {
-    throw new Error(message)
+    throw new Error(message);
   }
 }
 
@@ -19,16 +19,16 @@ async function throwIfExist(model, id, message, options) {
       id,
     },
     ...(options || {}),
-  }
+  };
   const data = await model.findOne({
     ...curOptions,
-  })
+  });
   if (data) {
-    throw new Error(message)
+    throw new Error(message);
   }
 }
 
 module.exports = {
   throwIfNotExist,
   throwIfExist,
-}
+};

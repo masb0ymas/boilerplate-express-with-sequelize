@@ -1,4 +1,4 @@
-const { Type } = require('./helpers/MigrationHelpers')
+const { Type } = require('./helpers/MigrationHelpers');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -7,9 +7,9 @@ module.exports = {
       nama: Type.string(true),
       createdAt: Type.date(true),
       updatedAt: Type.date(true),
-    })
+    });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Roles')
+    return queryInterface.dropTable('Roles');
   },
-}
+};

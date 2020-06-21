@@ -1,7 +1,7 @@
-import models from '../models'
-import SimpleMasterController from './base/SimpleMasterController'
-import mvBaseMaster from '../models/validations/mvBaseMaster'
+import models from '../models';
+import SimpleMasterController from './base/SimpleMasterController';
+import mvBaseMaster from '../models/validations/mvBaseMaster';
 
-const { MasterTipeIdentitas } = models
+const { MasterTipeIdentitas } = models;
 
-module.exports = SimpleMasterController(MasterTipeIdentitas, mvBaseMaster)
+module.exports = SimpleMasterController(MasterTipeIdentitas, mvBaseMaster);
