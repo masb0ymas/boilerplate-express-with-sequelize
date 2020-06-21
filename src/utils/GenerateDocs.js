@@ -5,9 +5,9 @@ const baseRoutes = './docs/swagger/routes';
 const getPath = path => `${baseRoutes}${path}`;
 const docsSources = [
   getPath('/auth.js'),
-  getPath('/master-rak.js'),
-  getPath('/master-golongan-obat.js'),
-  getPath('/master-bentuk-sediaan-obat.js'),
+  getPath('/user.js'),
+  getPath('/role.js'),
+  getPath('/master-tipe-identitas.js'),
 ];
 
 export default function generateDocs(app) {
@@ -52,7 +52,7 @@ export default function generateDocs(app) {
         },
       },
       info: {
-        title: 'Klinik Api Documentation',
+        title: 'Example Api Documentation',
         version: '1.0.0',
       },
       basePath: '/v1',

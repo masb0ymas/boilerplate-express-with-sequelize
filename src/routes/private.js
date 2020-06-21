@@ -17,6 +17,9 @@ const AuthController = require('#controllers/AuthController');
 const RoleController = require('#controllers/RoleController');
 const UserController = require('#controllers/UserController');
 
+/* Master Controller */
+const MasterTipeIdentitasController = require('#controllers/MasterTipeIdentitasController');
+
 /* Authentication */
 apiPrivate.create({
   baseURL: '/auth',
@@ -36,12 +39,20 @@ apiPrivate.create({
   deleteWithParam: [[':id', UserController.destroy]],
 });
 
-/* Master Role */
+/* Role */
 apiPrivate.create({
   baseURL: '/role',
   post: RoleController.create,
   putWithParam: [[':id', RoleController.update]],
   deleteWithParam: [[':id', RoleController.destroy]],
+});
+
+/* Master Tipe Identitas */
+apiPrivate.create({
+  baseURL: '/master-tipe-identitas',
+  post: MasterTipeIdentitasController.create,
+  putWithParam: [[':id', MasterTipeIdentitasController.update]],
+  deleteWithParam: [[':id', MasterTipeIdentitasController.destroy]],
 });
 
 module.exports = router;

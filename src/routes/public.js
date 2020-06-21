@@ -13,6 +13,9 @@ const AuthController = require('#controllers/AuthController');
 const RoleController = require('#controllers/RoleController');
 const UserController = require('#controllers/UserController');
 
+/* Master Controller */
+const MasterTipeIdentitasController = require('#controllers/MasterTipeIdentitasController');
+
 /* Authentication */
 apiPublic.create({
   baseURL: '/auth',
@@ -29,11 +32,18 @@ apiPublic.create({
   getWithParam: [[':id', UserController.getOne]],
 });
 
-/* Master Role */
+/* Role */
 apiPublic.create({
   baseURL: '/role',
   get: RoleController.getAll,
   getWithParam: [[':id', RoleController.getOne]],
+});
+
+/* Master Tipe Identitas */
+apiPublic.create({
+  baseURL: '/master-tipe-identitas',
+  get: MasterTipeIdentitasController.getAll,
+  getWithParam: [[':id', MasterTipeIdentitasController.getOne]],
 });
 
 module.exports = router;
