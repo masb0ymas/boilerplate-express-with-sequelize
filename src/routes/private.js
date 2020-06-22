@@ -23,6 +23,7 @@ const MasterTipeIdentitasController = require('#controllers/MasterTipeIdentitasC
 /* Authentication */
 apiPrivate.create({
   baseURL: '/auth',
+  getWithParam: [['verify', AuthController.verifyToken]],
   putWithParam: [['change-password/:id', AuthController.changePass]],
 });
 

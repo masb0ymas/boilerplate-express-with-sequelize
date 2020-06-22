@@ -127,6 +127,10 @@ async function signIn({ req, ResponseError }) {
   }
 }
 
+async function verifyToken({ req, ResponseError }) {
+  return 'success';
+}
+
 async function getProfile({ req, ResponseError }) {
   const { headers } = req;
   const token = getToken(headers);
@@ -175,4 +179,4 @@ async function changePass({ req, ResponseError }) {
   throw new ResponseError('Unauthorized. Please Re-login...', 403);
 }
 
-export { signUp, signIn, getProfile, changePass };
+export { signUp, signIn, getProfile, changePass, verifyToken };
