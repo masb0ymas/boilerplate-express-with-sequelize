@@ -1,5 +1,5 @@
-const yup = require('yup');
-const xyup = require('./xyup');
+const yup = require('yup')
+const xyup = require('./xyup')
 
 const dict = {
   id: {
@@ -15,11 +15,11 @@ const dict = {
       RoleId: 'Role belum dipilih',
     },
   },
-};
+}
 
 const getShapeSchema = (required, language) => {
   // Default Langauge Id (Indonesia)
-  const msg = Object.assign(dict.id, dict[language]);
+  const msg = Object.assign(dict.id, dict[language])
   return {
     id: xyup.uuid('Invalid Id', required),
     fullName: xyup.string(msg.required.fullName),
@@ -36,7 +36,7 @@ const getShapeSchema = (required, language) => {
       .min(8, 'Minimal 8 karakter')
       .oneOf([yup.ref('newPassword')], 'Password tidak sama'),
     RoleId: xyup.uuid(msg.required.RoleId),
-  };
-};
+  }
+}
 
-module.exports = xyup.generateFormSchema(getShapeSchema);
+module.exports = xyup.generateFormSchema(getShapeSchema)

@@ -1,5 +1,5 @@
-const SequeliceSeed = require('../helpers/SequeliceSeed');
-const ConstMasterTipeIdentitas = require('../constants/ConstMasterTipeIdentitas');
+const SequeliceSeed = require('../helpers/SequeliceSeed')
+const ConstMasterTipeIdentitas = require('../constants/ConstMasterTipeIdentitas')
 
 const data = [
   {
@@ -14,6 +14,6 @@ const data = [
     id: ConstMasterTipeIdentitas.ID_KTP,
     nama: 'KTP',
   },
-];
+]
 
-module.exports = SequeliceSeed.createSeedData('MasterTipeIdentitases', data);
+module.exports = SequeliceSeed.createSeedData('MasterTipeIdentitases', data)

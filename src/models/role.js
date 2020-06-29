@@ -12,9 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       nama: DataTypes.STRING,
     },
     {}
-  );
+  )
   Role.associate = function(models) {
     // associations can be defined here
-  };
-  return Role;
-};
+  }
+  return Role
+}

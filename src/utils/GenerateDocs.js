@@ -1,14 +1,14 @@
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUI from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUI from 'swagger-ui-express'
 
-const baseRoutes = './docs/swagger/routes';
-const getPath = path => `${baseRoutes}${path}`;
+const baseRoutes = './docs/swagger/routes'
+const getPath = path => `${baseRoutes}${path}`
 const docsSources = [
   getPath('/auth.js'),
   getPath('/user.js'),
   getPath('/role.js'),
   getPath('/master-tipe-identitas.js'),
-];
+]
 
 export default function generateDocs(app) {
   const swaggerOptions = {
@@ -58,14 +58,14 @@ export default function generateDocs(app) {
       basePath: '/v1',
     },
     apis: docsSources,
-  };
+  }
 
-  const swaggerSpec = swaggerJSDoc(swaggerOptions);
+  const swaggerSpec = swaggerJSDoc(swaggerOptions)
 
   app.get('/v1/api-docs.json', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(swaggerSpec);
-  });
+    res.setHeader('Content-Type', 'application/json')
+    res.send(swaggerSpec)
+  })
 
-  app.use('/v1/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+  app.use('/v1/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec))
 }

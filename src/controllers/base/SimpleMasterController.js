@@ -1,10 +1,10 @@
-import sQuery from 'sequelice-query';
-import { get } from 'lodash';
-import { ObjectHelpers } from '#helpers';
+import sQuery from 'sequelice-query'
+import { get } from 'lodash'
+import { ObjectHelpers } from '#helpers'
 
 function createSimpleMaster(modelMaster, modelValidation, options) {
   const { configGetAll, configGetOne, configCreate, configUpdate } =
-    options || {};
+    options || {}
 
   async function getAll({ req, ResponseError }) {
     const condition = await sQuery.generateWithPagination({
@@ -18,7 +18,7 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
         },
         ...configGetAll,
       },
-    });
+    })
 
     const {
       include,
@@ -27,7 +27,7 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
       includeCount,
       offset,
       limit,
-    } = condition;
+    } = condition
 
     const data = await modelMaster.findAll({
       include,
@@ -35,18 +35,18 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
       order,
       offset,
       limit,
-    });
+    })
 
     const totalRow = await modelMaster.count({
       include: includeCount,
       where,
-    });
+    })
 
-    return { data, totalRow };
+    return { data, totalRow }
   }
 
   async function getOne({ req, ResponseError }) {
-    const { id } = req.params;
+    const { id } = req.params
     const condition = await sQuery.generateWithPagination({
       req,
       model: modelMaster,
@@ -58,28 +58,28 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
         },
         ...configGetOne,
       },
-    });
+    })
 
-    const { include, queryFilter: where, querySort: order } = condition;
+    const { include, queryFilter: where, querySort: order } = condition
 
     const data = await modelMaster.findOne({
       include,
       where,
       order,
-    });
+    })
 
     if (!data) {
-      throw new ResponseError('Data tidak ditemukan atau telah dihapus', 404);
+      throw new ResponseError('Data tidak ditemukan atau telah dihapus', 404)
     }
 
-    return { data };
+    return { data }
   }
 
   async function create({ req, ResponseError }) {
-    const { body } = req;
-    let rawFormData = { ...body };
+    const { body } = req
+    let rawFormData = { ...body }
     if (get(configCreate, 'getFormData', null)) {
-      rawFormData = { ...(await configCreate.getFormData(req)) };
+      rawFormData = { ...(await configCreate.getFormData(req)) }
     }
 
     const formData = await modelValidation
@@ -87,45 +87,45 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
       .validate(rawFormData, {
         stripUnknown: true,
         abortEarly: false,
-      });
+      })
 
     /* remove empty id */
-    delete formData.id;
+    delete formData.id
 
-    await modelMaster.create(formData);
+    await modelMaster.create(formData)
 
-    return { message: 'Data berhasil dibuat!' };
+    return { message: 'Data berhasil dibuat!' }
   }
 
   async function update({ req, ResponseError }) {
-    const { body, params } = req;
-    let rawFormData = { ...body, ...params };
+    const { body, params } = req
+    let rawFormData = { ...body, ...params }
     if (get(configUpdate, 'getFormData', null)) {
-      rawFormData = await configUpdate.getFormData(req);
+      rawFormData = await configUpdate.getFormData(req)
     }
 
-    const data = await modelMaster.findByPk(params.id);
+    const data = await modelMaster.findByPk(params.id)
 
     const formData = await ObjectHelpers.assignAndValidate(
       data.toJSON(),
       rawFormData,
       modelValidation.getUpdateSchema()
-    );
+    )
 
-    await data.update(formData);
+    await data.update(formData)
 
-    return { message: 'Data berhasil diupdate!' };
+    return { message: 'Data berhasil diupdate!' }
   }
 
   async function destroy({ req, ResponseError }) {
-    const { id } = req.params;
+    const { id } = req.params
 
-    const data = await modelMaster.findByPk(id);
+    const data = await modelMaster.findByPk(id)
     if (!data) {
-      throw new ResponseError('Data tidak ditemukan!', 404);
+      throw new ResponseError('Data tidak ditemukan!', 404)
     }
-    await data.destroy();
-    return { message: 'Data berhasil dihapus!' };
+    await data.destroy()
+    return { message: 'Data berhasil dihapus!' }
   }
 
   return {
@@ -134,7 +134,7 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
     create,
     update,
     destroy,
-  };
+  }
 }
 
-module.exports = createSimpleMaster;
+module.exports = createSimpleMaster

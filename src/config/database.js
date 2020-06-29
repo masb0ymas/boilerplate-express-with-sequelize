@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import 'dotenv/config'
 
 module.exports = {
   development: {
@@ -25,4 +25,4 @@ module.exports = {
     dialect: process.env.PROD_DB_CONNECTION,
     timezone: process.env.PROD_DB_TIMEZONE,
   },
-};
+}

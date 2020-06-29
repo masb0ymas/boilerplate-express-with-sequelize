@@ -1,14 +1,14 @@
 // eslint-disable-next-line import/named
-import { wrapperRequest } from './ExpressHelpers';
-import ObjectHelpers from './ObjectHelpers';
-import MulterMiddleware from './Multer';
+import { wrapperRequest } from './ExpressHelpers'
+import ObjectHelpers from './ObjectHelpers'
+import MulterMiddleware from './Multer'
 import {
   getUniqueCode,
   getUniqueCodev2,
   getToken,
   validationRequest,
   removeFileUpload,
-} from './Common';
+} from './Common'
 
 export {
   wrapperRequest,
@@ -19,4 +19,4 @@ export {
   getToken,
   validationRequest,
   removeFileUpload,
-};
+}

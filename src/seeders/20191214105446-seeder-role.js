@@ -13,7 +13,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-    ]);
+    ])
   },
 
   down: (queryInterface, Sequelize) => {
@@ -25,4 +25,4 @@ module.exports = {
       return queryInterface.bulkDelete('People', null, {});
     */
   },
-};
+}

@@ -4,8 +4,8 @@ const DEFAULT_SCOPE_NO_TIMESTAMP = {
       exclude: ['createdAt', 'updatedAt'],
     },
   },
-};
+}
 
 module.exports = {
   DEFAULT_SCOPE_NO_TIMESTAMP,
-};
+}

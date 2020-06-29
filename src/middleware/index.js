@@ -1,3 +1,3 @@
-import multerCSV from './multerCSV';
+import multerCSV from './multerCSV'
 
-export default multerCSV;
+export default multerCSV
