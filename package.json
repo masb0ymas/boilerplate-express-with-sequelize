@@ -1,6 +1,6 @@
 {
   "name": "boilerplate-express-with-sequelize",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Just Boilerplate",
   "private": true,
   "scripts": {
