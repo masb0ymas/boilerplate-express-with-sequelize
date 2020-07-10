@@ -2,7 +2,7 @@ import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUI from 'swagger-ui-express'
 
 const baseRoutes = './docs/swagger/routes'
-const getPath = path => `${baseRoutes}${path}`
+const getPath = (path) => `${baseRoutes}${path}`
 const docsSources = [
   getPath('/auth.js'),
   getPath('/user.js'),

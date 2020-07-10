@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
-  Role.associate = function(models) {
+  Role.associate = function (models) {
     // associations can be defined here
   }
   return Role

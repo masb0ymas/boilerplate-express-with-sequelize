@@ -33,7 +33,7 @@ transporter.verify((err, success) => {
 })
 
 const readHTMLFile = (path, callback) => {
-  fs.readFile(path, { encoding: 'utf-8' }, function(err, html) {
+  fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
     if (err) {
       throw err
       // eslint-disable-next-line no-unreachable

@@ -21,7 +21,7 @@ const WRAPPER_GLOBAL_CONTEXT = {
   createQuery,
 }
 
-exports.wrapperRequest = fn => {
+exports.wrapperRequest = (fn) => {
   return async (req, res) => {
     try {
       const buildTransaction = () => {

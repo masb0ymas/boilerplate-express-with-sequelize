@@ -1,4 +1,4 @@
-const filterValueByKey = params => {
+const filterValueByKey = (params) => {
   return ({ value }) => {
     let curValue = value || undefined
     if (params) {

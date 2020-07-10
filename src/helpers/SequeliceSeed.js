@@ -7,7 +7,7 @@ exports.createSeedData = (
 ) => {
   return {
     up: (queryInterface, Sequelize) => {
-      const data = listData.map(x => {
+      const data = listData.map((x) => {
         const item = { ...x }
         for (let i = 0; i < arrColumnsDate.length; i += 1) {
           const columnDate = arrColumnsDate[i]
@@ -24,7 +24,7 @@ exports.createSeedData = (
     down: (queryInterface, Sequelize) => {
       return queryInterface.bulkDelete(
         tableName,
-        { id: listData.map(x => x.id) },
+        { id: listData.map((x) => x.id) },
         {}
       )
     },

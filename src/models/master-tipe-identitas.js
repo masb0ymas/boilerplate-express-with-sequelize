@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       ...ConstModel.DEFAULT_SCOPE_NO_TIMESTAMP,
     }
   )
-  MasterTipeIdentitas.associate = function(models) {
+  MasterTipeIdentitas.associate = function (models) {
     // associations can be defined here
   }
   return MasterTipeIdentitas

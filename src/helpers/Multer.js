@@ -25,7 +25,7 @@ function addUploadedFilesToReq(req) {
             but still you can access raw files via rawUploadedFiles it's same like req.files
             but just make your code more readable
            */
-          req.uploadedFiles[field.name] = files.map(x => x.filename)
+          req.uploadedFiles[field.name] = files.map((x) => x.filename)
           req.rawUploadedFiles[field.name] = files
         } else {
           /*
@@ -78,9 +78,9 @@ const setup = (
   return function uploadsField(fields) {
     const upload = configUpload.fields(fields)
 
-    return function(req, res, next) {
+    return function (req, res, next) {
       req.multerFields = fields
-      upload(req, res, err => {
+      upload(req, res, (err) => {
         addUploadedFilesToReq(req)
         if (err) {
           if (err.code === 'LIMIT_FILE_SIZE') {

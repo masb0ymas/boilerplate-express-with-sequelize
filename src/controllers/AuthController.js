@@ -27,7 +27,7 @@ async function createDirectory(userData) {
     `./public/uploads/profile/${userData.id}`,
   ]
 
-  pathDirectory.map(x => createDirNotExist(x))
+  pathDirectory.map((x) => createDirNotExist(x))
 }
 
 async function signUp({ req, ResponseError }) {

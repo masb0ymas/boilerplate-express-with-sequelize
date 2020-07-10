@@ -99,16 +99,16 @@ module.exports = (sequelize, DataTypes) => {
   )
 
   // Compare password
-  User.prototype.comparePassword = function(candidatePassword) {
+  User.prototype.comparePassword = function (candidatePassword) {
     return new Promise((resolve, reject) => {
-      bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+      bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err) reject(err)
         resolve(isMatch)
       })
     })
   }
 
-  User.associate = function(models) {
+  User.associate = function (models) {
     // associations can be defined here
     User.belongsTo(models.Role, {
       foreignKey: 'RoleId',
