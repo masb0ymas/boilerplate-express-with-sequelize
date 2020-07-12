@@ -11,7 +11,11 @@
     "build": "npm run clean && babel src --out-dir dist",
     "serve:staging": "NODE_ENV=staging node ./dist/bin/server.js",
     "serve:production": "NODE_ENV=production node ./dist/bin/server.js",
-    "db:reset": "npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all",
+    "db:migrate": "npx sequelize-cli db:migrate",
+    "db:migrate:fresh": "npx sequelize-cli db:migrate:undo:all && npm run db:migrate",
+    "db:seed": "npx sequelize-cli db:seed:all",
+    "db:drop": "npx sequelize-cli db:drop",
+    "db:reset": "npm run db:drop && npx sequelize-cli db:create && npm run db:migrate && npm run db:seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "masb0ymas",
