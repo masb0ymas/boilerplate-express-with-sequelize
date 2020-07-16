@@ -52,7 +52,7 @@
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
     "uno-api": "^1.2.2",
-    "yup": "^0.27.0"
+    "yup": "^0.29.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
