@@ -4,7 +4,7 @@ exports.addColumns = (tableName, newColumns) => {
       const columns = newColumns(Sequelize)
 
       return Promise.all(
-        columns.map(item => {
+        columns.map((item) => {
           const { key, type, ...options } = item
           return queryInterface.addColumn(tableName, key, {
             type,
@@ -18,7 +18,7 @@ exports.addColumns = (tableName, newColumns) => {
       const columns = newColumns(Sequelize)
 
       return Promise.all(
-        columns.map(item => queryInterface.removeColumn(tableName, item.key))
+        columns.map((item) => queryInterface.removeColumn(tableName, item.key))
       )
     },
   }
@@ -30,7 +30,7 @@ exports.removeColumns = (tableName, cols) => {
       const columns = cols(Sequelize)
 
       return Promise.all(
-        columns.map(item => queryInterface.removeColumn(tableName, item.key))
+        columns.map((item) => queryInterface.removeColumn(tableName, item.key))
       )
     },
 
@@ -38,7 +38,7 @@ exports.removeColumns = (tableName, cols) => {
       const columns = cols(Sequelize)
 
       return Promise.all(
-        columns.map(item => {
+        columns.map((item) => {
           const { key, type, ...options } = item
           return queryInterface.addColumn(tableName, key, {
             type,
@@ -56,7 +56,7 @@ exports.changeColumns = (tableName, changeColumns) => {
       const columns = changeColumns(Sequelize)
 
       return Promise.all(
-        columns.map(item => {
+        columns.map((item) => {
           const { key, ...dataTypeOrOptions } = item
 
           return queryInterface.changeColumn(
@@ -83,7 +83,7 @@ exports.renameColumns = (tableName, newColumns) => {
       const columns = newColumns(Sequelize)
 
       return Promise.all(
-        columns.map(item =>
+        columns.map((item) =>
           queryInterface.renameColumn(
             tableName,
             item.nameBefore,
@@ -97,7 +97,7 @@ exports.renameColumns = (tableName, newColumns) => {
       const columns = newColumns(Sequelize)
 
       return Promise.all(
-        columns.map(item =>
+        columns.map((item) =>
           queryInterface.renameColumn(
             tableName,
             item.nameAfter,
@@ -109,13 +109,13 @@ exports.renameColumns = (tableName, newColumns) => {
   }
 }
 
-exports.renameTables = changeTables => {
+exports.renameTables = (changeTables) => {
   return {
     up: (queryInterface, Sequelize) => {
       const columns = changeTables(Sequelize)
 
       return Promise.all(
-        columns.map(item =>
+        columns.map((item) =>
           queryInterface.renameTable(item.nameBefore, item.nameAfter)
         )
       )
@@ -125,7 +125,7 @@ exports.renameTables = changeTables => {
       const columns = changeTables(Sequelize)
 
       return Promise.all(
-        columns.map(item =>
+        columns.map((item) =>
           queryInterface.renameTable(item.nameAfter, item.nameBefore)
         )
       )
@@ -133,9 +133,9 @@ exports.renameTables = changeTables => {
   }
 }
 
-const getDefaultNameColumns = obj => {
+const getDefaultNameColumns = (obj) => {
   const entries = Object.entries(obj)
-  return entries.map(x => x[0])
+  return entries.map((x) => x[0])
 }
 
 exports.createTable = (tableName, newColumns) => {

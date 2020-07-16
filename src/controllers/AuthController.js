@@ -27,7 +27,7 @@ async function createDirectory(userData) {
     `./public/uploads/profile/${userData.id}`,
   ]
 
-  pathDirectory.map(x => createDirNotExist(x))
+  pathDirectory.map((x) => createDirNotExist(x))
 }
 
 async function signUp({ req, ResponseError }) {
@@ -127,6 +127,10 @@ async function signIn({ req, ResponseError }) {
   }
 }
 
+async function verifyToken({ req, ResponseError }) {
+  return 'success'
+}
+
 async function getProfile({ req, ResponseError }) {
   const { headers } = req
   const token = getToken(headers)
@@ -134,7 +138,9 @@ async function getProfile({ req, ResponseError }) {
     const decodeToken = jwt.decode(token)
     const including = [{ model: Role }]
 
-    const dataUser = await User.findByPk(decodeToken.id, { include: including })
+    const dataUser = await User.findByPk(decodeToken.id, {
+      include: including,
+    })
     return { data: dataUser }
   }
 
@@ -173,4 +179,4 @@ async function changePass({ req, ResponseError }) {
   throw new ResponseError('Unauthorized. Please Re-login...', 403)
 }
 
-export { signUp, signIn, getProfile, changePass }
+export { signUp, signIn, getProfile, changePass, verifyToken }

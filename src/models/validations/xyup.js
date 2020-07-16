@@ -52,7 +52,7 @@ function uuid(msgInvalid, required = true) {
   return CreateId(yup.string(), msgInvalid, required)
 }
 
-yup.addMethod(yup.string, 'errorsMessage', function(message, methods) {
+yup.addMethod(yup.string, 'errorsMessage', function (message, methods) {
   let custom = this
   const cMethods = methods || []
   for (let i = 0; i < cMethods.length; i += 1) {
@@ -108,7 +108,7 @@ class Date {
       return [
         name,
         errorMessage || defaultErrorMessage,
-        function(value) {
+        function (value) {
           return moment(value, formatString)[fnName](
             moment(this.parent[key], formatString),
             unitOfTime
@@ -203,7 +203,7 @@ class Date {
 }
 
 function generateFormSchema(getShapeSchema) {
-  const getCreateSchema = function(language = 'id') {
+  const getCreateSchema = function (language = 'id') {
     const shapeSchema = getShapeSchema(false, language)
     /*
      hapus id dari schema untuk menghindari id dibuat manual
@@ -213,11 +213,11 @@ function generateFormSchema(getShapeSchema) {
     return yup.object().shape(shapeSchema)
   }
 
-  const getDefaultSchema = function(language = 'id') {
+  const getDefaultSchema = function (language = 'id') {
     return yup.object().shape(getShapeSchema(false, language))
   }
 
-  const getUpdateSchema = function(language = 'id') {
+  const getUpdateSchema = function (language = 'id') {
     return yup.object().shape(getShapeSchema(true, language))
   }
 
@@ -236,7 +236,7 @@ class Type {
   static phoneNumber(message) {
     return yup
       .string()
-      .test('len', message, val => val && val.toString().length >= 8)
+      .test('len', message, (val) => val && val.toString().length >= 8)
   }
 }
 

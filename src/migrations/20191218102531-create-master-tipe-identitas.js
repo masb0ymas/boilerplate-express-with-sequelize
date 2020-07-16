@@ -7,7 +7,7 @@ const columns = {
 }
 
 module.exports = {
-  ...SequeliceMigration.createTable(tableName, DataTypes => {
+  ...SequeliceMigration.createTable(tableName, (DataTypes) => {
     return columns
   }),
   columns,

@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to boilerplate-express-with-sequelize 👋</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.7-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/badge/version-0.2.0-blue.svg?cacheSeconds=2592000" />
   <img src="https://img.shields.io/badge/npm-%3E%3D6.10.0-blue.svg" />
   <img src="https://img.shields.io/badge/node-%3E%3D12.13.0-blue.svg" />
   <a href="https://github.com/masb0ymas/boilerplate-express-with-sequelize#readme" target="_blank">
@@ -37,6 +37,7 @@
 - JavaScript Style [Airbnb Base](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base)
 - Formating code using [Prettier](https://github.com/prettier/prettier) Integration [Eslint](https://github.com/prettier/eslint-config-prettier)
 - Using [Babel Resolver](https://github.com/tleunen/babel-plugin-module-resolver) for simplify the require/import paths
+- Documentation with [Swagger](https://github.com/swagger-api/swagger-ui)
 
 ## [Dokumentasi](https://github.com/masb0ymas/boilerplate-express-with-sequelize/blob/master/docs/id/README.md)
 

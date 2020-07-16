@@ -5,7 +5,7 @@ import PrivateRoute from './private' // with middleware
 const router = express.Router()
 
 /* Home Page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('index', {
     title: 'Express',
     description: 'Powered by Nusantech',
@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 })
 
 /* Forbidden Page. */
-router.get('/v1', function(req, res, next) {
+router.get('/v1', function (req, res, next) {
   res.render('index', {
     title: 'Hayo Mau ngapain ??',
     description: 'Forbidden Access',
@@ -25,7 +25,7 @@ router.use('/v1', PublicRoute)
 router.use('/v1', PrivateRoute)
 
 /* Not Found Page. */
-router.get('*', function(req, res, next) {
+router.get('*', function (req, res, next) {
   res.render('index', {
     title: 'Oops, Halaman tidak ditemukan!',
     description: 'Not Found',

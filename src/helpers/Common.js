@@ -4,9 +4,7 @@ import fs from 'fs'
 const invalidValues = [undefined, null, '', false]
 
 const getUniqueCode = () => {
-  return Math.random()
-    .toString(36)
-    .substr(2, 9)
+  return Math.random().toString(36).substr(2, 9)
 }
 
 const getUniqueCodev2 = (length = 32) => {
@@ -20,7 +18,7 @@ const getUniqueCodev2 = (length = 32) => {
   return result
 }
 
-const getToken = headers => {
+const getToken = (headers) => {
   if (headers && headers.authorization) {
     const parted = headers.authorization.split(' ')
     if (parted.length === 2) {
@@ -31,7 +29,7 @@ const getToken = headers => {
   return null
 }
 
-const validationRequest = async params => {
+const validationRequest = async (params) => {
   const { currentPassword, password, Phone } = params
 
   if (!invalidValues.includes(password)) {
@@ -63,7 +61,7 @@ const validationRequest = async params => {
   }
 }
 
-const removeFileUpload = pathDokumen => {
+const removeFileUpload = (pathDokumen) => {
   // check type of array
   if (Array.isArray(pathDokumen)) {
     for (let i = 0; i < pathDokumen.length; i += 1) {
