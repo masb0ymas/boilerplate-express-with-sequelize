@@ -1,6 +1,6 @@
-import models from '../models'
+import models from 'models'
+import mvBaseMaster from 'models/validations/mvBaseMaster'
 import SimpleMasterController from './base/SimpleMasterController'
-import mvBaseMaster from '../models/validations/mvBaseMaster'
 
 const { MasterTipeIdentitas } = models
 

@@ -1,6 +1,6 @@
-import models from '../models'
+import models from 'models'
+import mvUser from 'models/validations/mvUser'
 import SimpleMasterController from './base/SimpleMasterController'
-import mvUser from '../models/validations/mvUser'
 
 const { Role, User } = models
 

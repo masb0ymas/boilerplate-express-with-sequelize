@@ -1,4 +1,4 @@
-import { MulterMiddleware } from '#helpers'
+import { MulterMiddleware } from 'helpers'
 
 const setupMulterDoc = MulterMiddleware.setup(
   {
