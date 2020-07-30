@@ -1,4 +1,5 @@
-const yup = require('yup')
+import * as yup from 'yup'
+
 const xyup = require('./xyup')
 
 const dict = {
@@ -22,20 +23,20 @@ const getShapeSchema = (required, language) => {
   const msg = Object.assign(dict.id, dict[language])
   return {
     id: xyup.uuid('Invalid Id', required),
-    fullName: xyup.string(msg.required.fullName),
-    email: xyup.string(msg.required.email).email(msg.email.email),
-    phone: xyup.string(msg.required.phone),
-    active: xyup.string(undefined, false),
-    tokenVerify: xyup.string(undefined, false),
-    newPassword: xyup
-      .string(msg.required.newPassword, !required)
+    fullName: yup.string().required(msg.required.fullName),
+    email: yup.string().email(msg.email.email).required(msg.required.email),
+    phone: yup.string().required(msg.required.phone),
+    active: yup.string().nullable(),
+    tokenVerify: yup.string().nullable(),
+    newPassword: yup
+      .string()
       .min(8, 'Minimal 8 karakter')
       .oneOf([yup.ref('confirmNewPassword')], 'Password tidak sama'),
-    confirmNewPassword: xyup
-      .string(msg.required.confirmNewPassword, !required)
+    confirmNewPassword: yup
+      .string()
       .min(8, 'Minimal 8 karakter')
       .oneOf([yup.ref('newPassword')], 'Password tidak sama'),
-    RoleId: xyup.uuid(msg.required.RoleId),
+    RoleId: yup.string().required(msg.required.RoleId),
   }
 }
 
