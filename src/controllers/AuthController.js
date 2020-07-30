@@ -94,7 +94,7 @@ async function signIn({ req, ResponseError }) {
     throw new ResponseError('Data tidak ditemukan!', 404)
   }
 
-  if (userData.active === true) {
+  if (userData.active) {
     const checkPassword = await userData.comparePassword(password)
     if (checkPassword) {
       const userDataJson = userData.toJSON()
