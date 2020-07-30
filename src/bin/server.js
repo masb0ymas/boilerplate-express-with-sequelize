@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-use-before-define */
 
 /**
  * Module dependencies.
@@ -9,27 +8,6 @@
 const app = require('../app')
 const debug = require('debug')('boilerplate-express-with-sequelize:server')
 const http = require('http')
-
-/**
- * Get port from environment and store in Express.
- */
-
-const port = normalizePort(process.env.PORT || '8000')
-app.set('port', port)
-
-/**
- * Create HTTP server.
- */
-
-const server = http.createServer(app)
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port)
-server.on('error', onError)
-server.on('listening', onListening)
 
 /**
  * Normalize a port into a number, string, or false.
@@ -51,6 +29,13 @@ function normalizePort(val) {
 
   return false
 }
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+const port = normalizePort(process.env.PORT || '8000')
+app.set('port', port)
 
 /**
  * Event listener for HTTP server "error" event.
@@ -79,6 +64,12 @@ function onError(error) {
 }
 
 /**
+ * Create HTTP server.
+ */
+
+const server = http.createServer(app)
+
+/**
  * Event listener for HTTP server "listening" event.
  */
 
@@ -88,3 +79,11 @@ function onListening() {
   debug(`Listening on ${bind}`)
   console.log(`Listening on ${bind}`)
 }
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port)
+server.on('error', onError)
+server.on('listening', onListening)

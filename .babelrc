@@ -7,14 +7,14 @@
       {
         "root": ["."],
         "alias": {
-          "#config": "./src/config",
-          "#controllers": "./src/controllers",
-          "#constants": "./src/constants",
-          "#helpers": "./src/helpers",
-          "#models": "./src/models",
-          "#modules": "./src/modules",
-          "#middleware": "./src/middleware",
-          "#utils": "./src/utils"
+          "config": "./src/config",
+          "controllers": "./src/controllers",
+          "constants": "./src/constants",
+          "helpers": "./src/helpers",
+          "models": "./src/models",
+          "modules": "./src/modules",
+          "middleware": "./src/middleware",
+          "utils": "./src/utils"
         }
       }
     ]

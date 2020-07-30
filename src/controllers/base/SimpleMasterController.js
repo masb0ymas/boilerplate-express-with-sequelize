@@ -1,6 +1,6 @@
 import sQuery from 'sequelice-query'
 import { get } from 'lodash'
-import { ObjectHelpers } from '#helpers'
+import { ObjectHelpers } from 'helpers'
 
 function createSimpleMaster(modelMaster, modelValidation, options) {
   const { configGetAll, configGetOne, configCreate, configUpdate } =

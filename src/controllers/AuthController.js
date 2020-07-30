@@ -2,13 +2,13 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import passport from 'passport'
 import 'dotenv/config'
-import createDirNotExist from '#utils/Directory'
-import models from '#models'
-import mvUser from '#models/validations/mvUser'
-// import SendMailer from '#config/email'
-import { getToken, getUniqueCodev2, validationRequest } from '#helpers'
+import createDirNotExist from 'utils/Directory'
+import models from 'models'
+import mvUser from 'models/validations/mvUser'
+// import SendMailer from 'config/email'
+import { getToken, getUniqueCodev2, validationRequest } from 'helpers'
 
-require('#config/passport')(passport)
+require('config/passport')(passport)
 
 const jwtPass = process.env.JWT_SECRET
 // declare models
@@ -94,7 +94,7 @@ async function signIn({ req, ResponseError }) {
     throw new ResponseError('Data tidak ditemukan!', 404)
   }
 
-  if (userData.active === true) {
+  if (userData.active) {
     const checkPassword = await userData.comparePassword(password)
     if (checkPassword) {
       const userDataJson = userData.toJSON()

@@ -6,9 +6,9 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import helmet from 'helmet'
-import models from '#models'
+import models from 'models'
+import generateDocs from 'utils/GenerateDocs'
 import route from './routes'
-import generateDocs from '#utils/GenerateDocs'
 
 const app = express()
 

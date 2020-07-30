@@ -28,7 +28,11 @@ fs.readdirSync(__dirname)
     )
   })
   .forEach((file) => {
-    const model = sequelize.import(path.join(__dirname, file))
+    // eslint-disable-next-line global-require
+    const model = require(path.join(__dirname, file))(
+      sequelize,
+      Sequelize.DataTypes
+    )
     db[model.name] = model
   })
 

@@ -1,5 +1,5 @@
-const SequeliceSeed = require('../helpers/SequeliceSeed')
-const ConstMasterTipeIdentitas = require('../constants/ConstMasterTipeIdentitas')
+const SequeliceSeed = require('helpers/SequeliceSeed')
+const ConstMasterTipeIdentitas = require('constants/ConstMasterTipeIdentitas')
 
 const data = [
   {

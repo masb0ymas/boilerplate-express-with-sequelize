@@ -2,14 +2,14 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "#config/*": ["./config/*"],
-      "#controllers/*": ["./controllers/*"],
-      "#constants/*": ["./constants/*"],
-      "#helpers/*": ["./helpers/*"],
-      "#models/*": ["./models/*"],
-      "#modules/*": ["./modules/*"],
-      "#middleware/*": ["./middleware/*"],
-      "#utils/*": ["./utils/*"],
+      "config/*": ["./config/*"],
+      "controllers/*": ["./controllers/*"],
+      "constants/*": ["./constants/*"],
+      "helpers/*": ["./helpers/*"],
+      "models/*": ["./models/*"],
+      "modules/*": ["./modules/*"],
+      "middleware/*": ["./middleware/*"],
+      "utils/*": ["./utils/*"]
     }
   }
 }

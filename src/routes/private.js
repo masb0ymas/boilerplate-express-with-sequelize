@@ -1,8 +1,8 @@
 import express from 'express'
 import passport from 'passport'
 import { Router as UnoRouter } from 'uno-api'
-import { wrapperRequest } from '#helpers'
-import multerCSV from '#middleware'
+import { wrapperRequest } from 'helpers/ExpressHelpers'
+import multerCSV from 'middleware/multerCSV'
 
 /* Setup Router With Middleware */
 const router = express.Router()
@@ -10,15 +10,15 @@ const apiPrivate = new UnoRouter(router, {
   middleware: passport.authenticate('jwt', { session: false }),
   wrapperRequest,
 })
-require('#config/passport')(passport)
+require('config/passport')(passport)
 
 /* Declare Controller */
-const AuthController = require('#controllers/AuthController')
-const RoleController = require('#controllers/RoleController')
-const UserController = require('#controllers/UserController')
+const AuthController = require('controllers/AuthController')
+const RoleController = require('controllers/RoleController')
+const UserController = require('controllers/UserController')
 
 /* Master Controller */
-const MasterTipeIdentitasController = require('#controllers/MasterTipeIdentitasController')
+const MasterTipeIdentitasController = require('controllers/MasterTipeIdentitasController')
 
 /* Authentication */
 apiPrivate.create({
