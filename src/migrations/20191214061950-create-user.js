@@ -1,27 +1,45 @@
-const { Type } = require('./helpers/MigrationHelpers')
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Users', {
-      id: Type.primaryKeyUUID(true),
-      fullName: Type.string(),
-      email: Type.string(true, {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+      },
+      fullName: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      email: {
+        allowNull: false,
         unique: true,
         type: Sequelize.STRING('191'),
-      }),
-      password: Type.string(true),
-      phone: Type.string(false, {
+      },
+      password: {
+        type: Sequelize.STRING,
+      },
+      phone: {
         defaultValue: null,
-      }),
-      RoleId: Type.foreignKeyUUID(),
-      active: Type.boolean(true, {
+        type: Sequelize.STRING,
+      },
+      active: {
+        allowNull: false,
         defaultValue: false,
-      }),
-      tokenVerify: Type.string(false, {
+        type: Sequelize.BOOLEAN,
+      },
+      tokenVerify: {
         defaultValue: null,
-      }),
-      createdAt: Type.date(true),
-      updatedAt: Type.date(true),
+        type: Sequelize.STRING,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
     })
   },
   down: (queryInterface, Sequelize) => {
