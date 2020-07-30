@@ -1,6 +1,6 @@
 import express from 'express'
 import { Router as UnoRouter } from 'uno-api'
-import { wrapperRequest } from '#helpers'
+import { wrapperRequest } from 'helpers/ExpressHelpers'
 
 /* Setup Router */
 const router = express.Router()
@@ -9,12 +9,12 @@ const apiPublic = new UnoRouter(router, {
 })
 
 /* Declare Controller */
-const AuthController = require('#controllers/AuthController')
-const RoleController = require('#controllers/RoleController')
-const UserController = require('#controllers/UserController')
+const AuthController = require('controllers/AuthController')
+const RoleController = require('controllers/RoleController')
+const UserController = require('controllers/UserController')
 
 /* Master Controller */
-const MasterTipeIdentitasController = require('#controllers/MasterTipeIdentitasController')
+const MasterTipeIdentitasController = require('controllers/MasterTipeIdentitasController')
 
 /* Authentication */
 apiPublic.create({
