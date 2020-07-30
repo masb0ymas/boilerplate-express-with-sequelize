@@ -4,8 +4,8 @@
   "description": "Just Boilerplate",
   "private": true,
   "scripts": {
-    "start": "nodemon --exec babel-node ./src/bin/server.js",
-    "dev": "npm run start",
+    "start": "npm run dev",
+    "dev": "nodemon --exec babel-node ./src/bin/server.js",
     "lint": "npx eslint '*/**/*.{js,jsx,ts,tsx}' --quiet --fix",
     "refresh:env-jwt": "node ./src/scripts/generateEnvJWT.js",
     "clean": "rm -rf ./dist",
