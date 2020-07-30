@@ -1,14 +1,26 @@
-import SequeliceMigration from '../helpers/SequeliceMigration'
-import { Type } from './helpers/MigrationHelpers'
-
-const tableName = 'MasterTipeIdentitases'
-const columns = {
-  nama: Type.string(true),
-}
-
 module.exports = {
-  ...SequeliceMigration.createTable(tableName, (DataTypes) => {
-    return columns
-  }),
-  columns,
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.createTable('MasterTipeIdentitases', {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+      },
+      nama: {
+        type: Sequelize.STRING,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+    })
+  },
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('MasterTipeIdentitases')
+  },
 }
