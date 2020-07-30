@@ -1,27 +1,66 @@
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUI from 'swagger-ui-express'
+import fs from 'fs'
+import _path from 'path'
 
-const baseRoutes = './docs/swagger/routes'
-const getPath = (path) => `${baseRoutes}${path}`
-const docsSources = [
-  getPath('/auth.js'),
-  getPath('/user.js'),
-  getPath('/role.js'),
-  getPath('/master-tipe-identitas.js'),
-]
+const { APP_NAME, PORT } = process.env
 
-export default function generateDocs(app) {
+const baseRoutes = _path.resolve('./docs/swagger/routes')
+// const baseSchemas = _path.resolve('./docs/swagger/schemas')
+
+const getPathRoutes = (path) => `${baseRoutes}${path}`
+// const getPathSchemes = (path) => `${baseSchemas}${path}`
+
+const getDocs = (basePath, getPath) => {
+  return fs.readdirSync(basePath).reduce((acc, file) => {
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    const data = require(getPath(`/${file}`))
+    // eslint-disable-next-line no-param-reassign
+    acc = {
+      ...acc,
+      ...data,
+    }
+    return acc
+  }, {})
+}
+
+const docsSources = getDocs(baseRoutes, getPathRoutes)
+// const docsSchemes = getDocs(baseSchemas, getPathSchemes)
+
+module.exports = function generateDocs(app) {
   const swaggerOptions = {
     definition: {
-      // openapi: '3.0.0', // Specification (optional, defaults to swagger: '2.0')
-      securityDefinitions: {
-        jwt: {
-          type: 'apiKey',
-          in: 'header',
-          name: 'Authorization',
+      openapi: '3.0.1',
+      servers: [
+        {
+          url: `http://localhost:${PORT}/v1`,
+          description: 'Development server',
         },
-      },
+        {
+          url: 'https://api-staging.example.com/v1',
+          description: 'Staging server',
+        },
+        {
+          url: 'https://api.example.com/v1',
+          description: 'Production server',
+        },
+      ],
+      // security: [  //Set GLOBAL
+      //   {
+      //     auth_token: []
+      //   }
+      // ],
       components: {
+        securitySchemes: {
+          auth_token: {
+            type: 'apiKey',
+            in: 'header',
+            name: 'Authorization',
+            description:
+              'JWT Authorization header using the JWT scheme. Example: “Authorization: JWT {token}”',
+          },
+        },
+        // schemas: docsSchemes,
         parameters: {
           page: {
             in: 'query',
@@ -52,12 +91,12 @@ export default function generateDocs(app) {
         },
       },
       info: {
-        title: 'Example Api Documentation',
+        title: `Api ${APP_NAME} Documentation`,
         version: '1.0.0',
       },
-      basePath: '/v1',
+      paths: docsSources,
     },
-    apis: docsSources,
+    apis: [],
   }
 
   const swaggerSpec = swaggerJSDoc(swaggerOptions)
