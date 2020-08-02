@@ -1,72 +1,60 @@
-import 'dotenv/config'
 import nodemailer from 'nodemailer'
-import handlebars from 'handlebars'
-import path from 'path'
-import fs from 'fs'
 
-const credential = {
-  email: process.env.MAIL_USERNAME,
-  password: process.env.MAIL_PASSWORD,
-}
+require('dotenv').config()
 
-// service ( smtp, zoho, mailgun, and others )
-const transport = {
-  service: process.env.MAIL_DRIVER,
-  port: process.env.MAIL_PORT,
-  secure: true,
-  // ignoreTLS:true,
-  // requireTLS:false,
-  auth: {
-    user: credential.email,
-    pass: credential.password,
-  },
-}
+const {
+  APP_NAME,
+  MAIL_DRIVER,
+  MAIL_HOST,
+  MAIL_PORT,
+  MAIL_USERNAME,
+  MAIL_PASSWORD,
+} = process.env
 
-const transporter = nodemailer.createTransport(transport)
-
-transporter.verify((err, success) => {
-  if (err) {
-    console.log(err)
-  } else {
-    console.log('Server mail it`s ready!')
+function setMailConfig() {
+  const configTransport = {
+    service: MAIL_DRIVER,
+    host: MAIL_HOST,
+    port: MAIL_PORT,
+    auth: {
+      user: MAIL_USERNAME,
+      pass: MAIL_PASSWORD,
+    },
   }
-})
+  return configTransport
+}
 
-const readHTMLFile = (path, callback) => {
-  fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
-    if (err) {
-      throw err
-      // eslint-disable-next-line no-unreachable
-      callback(err)
+function setMailOptions(dest, subject, text) {
+  return {
+    from: `${APP_NAME} <${MAIL_USERNAME}>`,
+    to: dest,
+    subject,
+    html: text,
+  }
+}
+
+function sendMail(dest, subject, text) {
+  const mailConfig = setMailConfig()
+  const mailOptions = setMailOptions(dest, subject, text)
+  // Nodemailer Transport
+  const transporter = nodemailer.createTransport(mailConfig)
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error)
     } else {
-      callback(null, html)
+      console.log('successfully', info)
     }
   })
 }
 
-// get read html file from config
-const SendMailer = (htmlTemplate, objData, optMail) => {
-  readHTMLFile(
-    path.resolve(__dirname, `../../public/email_template/${htmlTemplate}`),
-    (err, html) => {
-      const template = handlebars.compile(html)
-      const htmlToSend = template(objData)
-      const mailOptions = {
-        from: `No Reply <${credential.email}>`,
-        to: `${optMail.emailTo}`,
-        subject: `${optMail.subject}`,
-        html: htmlToSend,
-      }
-      // get transporter from config
-      transporter.sendMail(mailOptions, (err, data) => {
-        if (err) {
-          console.log(err)
-        } else {
-          console.log('successfully', data)
-        }
-      })
-    }
-  )
+class EmailProvider {
+  // Public Method
+  static send(to, subject, template) {
+    const dest = Array.isArray(to) ? to.join(',') : to
+    const text = template
+    // send an e-mail
+    sendMail(dest, subject, text)
+  }
 }
 
-export default SendMailer
+export default EmailProvider
