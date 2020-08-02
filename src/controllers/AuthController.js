@@ -6,7 +6,7 @@ import createDirNotExist from 'utils/Directory'
 import models from 'models'
 import mvUser from 'models/validations/mvUser'
 // import SendMailer from 'config/email'
-import { getToken, getUniqueCodev2, validationRequest } from 'helpers'
+import { getToken, getUniqueCodev2 } from 'helpers'
 
 require('config/passport')(passport)
 
@@ -54,23 +54,6 @@ async function signUp({ req, ResponseError }) {
   formData = { ...formData, tokenVerify }
 
   const data = await User.create(formData)
-
-  /*
-    Example for sending email
-    fungsi SendMailer cuma mengirim params / argument yg dibutuhkan utk
-    menggunakan Node Mailer
-  */
-
-  // const htmlTemplate = 'signUpTemplate.html'
-  // const objData = {
-  //   fullName,
-  //   token: tokenVerify,
-  // }
-  // const optMail = {
-  //   emailTo: email,
-  //   subject: 'Verifikasi Email',
-  // }
-  // SendMailer(htmlTemplate, objData, optMail)
 
   return {
     data,
@@ -154,8 +137,6 @@ async function changePass({ req, ResponseError }) {
   const { currentPassword, password } = body
 
   if (token) {
-    await validationRequest(body)
-
     const editData = await User.scope('withPassword').findById(id)
     if (!editData) {
       throw new ResponseError('Data tidak ditemukan!', 404)
