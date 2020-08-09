@@ -61,7 +61,7 @@ async function signUp({ req, ResponseError }) {
   }
 }
 
-async function signIn({ req, ResponseError }) {
+async function signIn({ req, BaseResponse }) {
   const { body } = req
   const { email, password } = body
 
@@ -74,7 +74,7 @@ async function signIn({ req, ResponseError }) {
   })
 
   if (!userData) {
-    throw new ResponseError('Data tidak ditemukan!', 404)
+    throw new BaseResponse('Data tidak ditemukan!', 404)
   }
 
   if (userData.active) {
@@ -101,9 +101,9 @@ async function signIn({ req, ResponseError }) {
       }
     }
     // console.log(res)
-    throw new ResponseError('Email atau Password salah!', 401)
+    throw new BaseResponse('Email atau Password salah!', 401)
   } else {
-    throw new ResponseError(
+    throw new BaseResponse(
       'Please check your email account to verify your email and continue the registration process.',
       401
     )
