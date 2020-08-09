@@ -1,40 +1,13 @@
-// eslint-disable-next-line max-classes-per-file
-class ResponseError extends Error {
-  constructor(message, statusCode = 500) {
-    super(message)
-    this.message = message
-    this.statusCode = statusCode
-  }
-}
-
-class NotFoundError extends ResponseError {
-  constructor(message) {
-    super(message, 404)
-  }
-}
-
-class ForbiddenError extends ResponseError {
-  constructor(message) {
-    super(message, 403)
-  }
-}
-
-class BadRequestError extends ResponseError {
-  constructor(message) {
-    super(message, 400)
-  }
-}
-
-class UnauthorizedError extends ResponseError {
-  constructor(message) {
-    super(message, 401)
-  }
-}
+import BaseResponse from './Errors/BaseResponse'
+import BadRequest from './Errors/BadRequest'
+import Forbidden from './Errors/Forbidden'
+import NotFound from './Errors/NotFound'
+import Unauthorized from './Errors/Unauthorized'
 
 module.exports = {
-  ResponseError,
-  BadRequestError,
-  NotFoundError,
-  ForbiddenError,
-  UnauthorizedError,
+  BaseResponse,
+  BadRequest,
+  Forbidden,
+  NotFound,
+  Unauthorized,
 }
