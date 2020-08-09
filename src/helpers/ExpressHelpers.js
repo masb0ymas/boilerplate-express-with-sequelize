@@ -3,20 +3,20 @@ const { isObject, get } = require('lodash')
 const yup = require('yup')
 const fs = require('fs')
 const {
-  ResponseError,
-  NotFoundError,
-  ForbiddenError,
-  BadRequestError,
-  UnauthorizedError,
-} = require('../modules/ResponseError')
-const { Sequelize, sequelize } = require('../models')
+  BaseResponse,
+  BadRequest,
+  Forbidden,
+  NotFound,
+  Unauthorized,
+} = require('modules/ResponseError')
+const { Sequelize, sequelize } = require('models')
 
 const WRAPPER_GLOBAL_CONTEXT = {
-  ResponseError,
-  NotFoundError,
-  ForbiddenError,
-  BadRequestError,
-  UnauthorizedError,
+  BaseResponse,
+  BadRequest,
+  Forbidden,
+  NotFound,
+  Unauthorized,
   createParams,
   createQuery,
 }
@@ -49,7 +49,7 @@ exports.wrapperRequest = (fn) => {
         await req.transaction.rollback()
       }
 
-      if (e instanceof ResponseError) {
+      if (e instanceof BaseResponse) {
         console.log('ERROR RESPONSE ERROR!!!')
         return res.status(e.statusCode).json(generateErrorResponseError(e))
       }
