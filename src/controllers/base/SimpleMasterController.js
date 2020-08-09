@@ -6,7 +6,7 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
   const { configGetAll, configGetOne, configCreate, configUpdate } =
     options || {}
 
-  async function getAll({ req, ResponseError }) {
+  async function getAll({ req, BaseResponse }) {
     const condition = await sQuery.generateWithPagination({
       req,
       model: modelMaster,
@@ -45,7 +45,7 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
     return { data, totalRow }
   }
 
-  async function getOne({ req, ResponseError }) {
+  async function getOne({ req, BaseResponse }) {
     const { id } = req.params
     const condition = await sQuery.generateWithPagination({
       req,
@@ -69,13 +69,13 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
     })
 
     if (!data) {
-      throw new ResponseError('Data tidak ditemukan atau telah dihapus', 404)
+      throw new BaseResponse('Data tidak ditemukan atau telah dihapus', 404)
     }
 
     return { data }
   }
 
-  async function create({ req, ResponseError }) {
+  async function create({ req, BaseResponse }) {
     const { body } = req
     let rawFormData = { ...body }
     if (get(configCreate, 'getFormData', null)) {
@@ -97,7 +97,7 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
     return { message: 'Data berhasil dibuat!' }
   }
 
-  async function update({ req, ResponseError }) {
+  async function update({ req, BaseResponse }) {
     const { body, params } = req
     let rawFormData = { ...body, ...params }
     if (get(configUpdate, 'getFormData', null)) {
@@ -117,12 +117,12 @@ function createSimpleMaster(modelMaster, modelValidation, options) {
     return { message: 'Data berhasil diupdate!' }
   }
 
-  async function destroy({ req, ResponseError }) {
+  async function destroy({ req, BaseResponse }) {
     const { id } = req.params
 
     const data = await modelMaster.findByPk(id)
     if (!data) {
-      throw new ResponseError('Data tidak ditemukan!', 404)
+      throw new BaseResponse('Data tidak ditemukan!', 404)
     }
     await data.destroy()
     return { message: 'Data berhasil dihapus!' }
