@@ -389,7 +389,7 @@ async function getAll({ req, ResponseError }) {
   const { roleId } = req.query
   const condition = await sQuery.generateWithPagination({
     req,
-    model: Stok,
+    model: User,
     configs: {
       include: including,
       optFilter: {
