@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import { google } from 'googleapis'
 
 require('dotenv').config()
 
@@ -9,18 +10,50 @@ const {
   MAIL_PORT,
   MAIL_USERNAME,
   MAIL_PASSWORD,
+  MAIL_AUTH_TYPE,
+  OAUTH_CLIENT_ID,
+  OAUTH_CLIENT_SECRET,
+  OAUTH_REFRESH_TOKEN,
+  OAUTH_REDIRECT_URL,
 } = process.env
 
 function setMailConfig() {
   const configTransport = {
     service: MAIL_DRIVER,
-    host: MAIL_HOST,
-    port: MAIL_PORT,
     auth: {
       user: MAIL_USERNAME,
-      pass: MAIL_PASSWORD,
     },
   }
+
+  // Use Google OAuth
+  if (MAIL_AUTH_TYPE === 'OAuth2') {
+    const oauth2Client = new google.auth.OAuth2(
+      OAUTH_CLIENT_ID,
+      OAUTH_CLIENT_SECRET,
+      OAUTH_REDIRECT_URL
+    )
+
+    oauth2Client.setCredentials({
+      refresh_token: OAUTH_REFRESH_TOKEN,
+    })
+
+    const accessToken = async () => {
+      const result = await oauth2Client.getRequestHeaders()
+      return result
+    }
+
+    configTransport.auth.type = MAIL_AUTH_TYPE
+    configTransport.auth.clientId = OAUTH_CLIENT_ID
+    configTransport.auth.clientSecret = OAUTH_CLIENT_SECRET
+    configTransport.auth.refreshToken = OAUTH_REFRESH_TOKEN
+    configTransport.auth.accessToken = accessToken()
+  } else {
+    // SMTP Default
+    configTransport.host = MAIL_HOST
+    configTransport.port = MAIL_PORT
+    configTransport.auth.pass = MAIL_PASSWORD
+  }
+
   return configTransport
 }
 
@@ -47,14 +80,11 @@ function sendMail(dest, subject, text) {
   })
 }
 
-class EmailProvider {
-  // Public Method
-  static send(to, subject, template) {
-    const dest = Array.isArray(to) ? to.join(',') : to
-    const text = template
-    // send an e-mail
-    sendMail(dest, subject, text)
-  }
+async function composeEmail(to, subject, template) {
+  const dest = Array.isArray(to) ? to.join(',') : to
+  const text = template
+  // send an e-mail
+  sendMail(dest, subject, text)
 }
 
-export default EmailProvider
+export default composeEmail
