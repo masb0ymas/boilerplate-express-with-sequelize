@@ -30,7 +30,7 @@ async function createDirectory(userData) {
   pathDirectory.map((x) => createDirNotExist(x))
 }
 
-async function signUp({ req, ResponseError }) {
+async function signUp({ req, BaseResponse }) {
   const { body } = req
 
   const generateToken = {
@@ -110,11 +110,11 @@ async function signIn({ req, BaseResponse }) {
   }
 }
 
-async function verifyToken({ req, ResponseError }) {
+async function verifyToken({ req, BaseResponse }) {
   return 'success'
 }
 
-async function getProfile({ req, ResponseError }) {
+async function getProfile({ req, BaseResponse }) {
   const { headers } = req
   const token = getToken(headers)
   if (token) {
@@ -127,10 +127,10 @@ async function getProfile({ req, ResponseError }) {
     return { data: dataUser }
   }
 
-  throw new ResponseError('Unauthorized. Please Re-login...', 403)
+  throw new BaseResponse('Unauthorized. Please Re-login...', 403)
 }
 
-async function changePass({ req, ResponseError }) {
+async function changePass({ req, BaseResponse }) {
   const { headers, body, params } = req
   const token = getToken(headers)
   const { id } = params
@@ -139,7 +139,7 @@ async function changePass({ req, ResponseError }) {
   if (token) {
     const editData = await User.scope('withPassword').findById(id)
     if (!editData) {
-      throw new ResponseError('Data tidak ditemukan!', 404)
+      throw new BaseResponse('Data tidak ditemukan!', 404)
     }
 
     if (bcrypt.compareSync(currentPassword, editData.password)) {
@@ -148,7 +148,7 @@ async function changePass({ req, ResponseError }) {
         password: hashPassword,
       })
     } else {
-      throw new ResponseError('Password lama kamu salah!', 400)
+      throw new BaseResponse('Password lama kamu salah!', 400)
     }
 
     return {
@@ -157,7 +157,7 @@ async function changePass({ req, ResponseError }) {
     }
   }
 
-  throw new ResponseError('Unauthorized. Please Re-login...', 403)
+  throw new BaseResponse('Unauthorized. Please Re-login...', 403)
 }
 
 export { signUp, signIn, getProfile, changePass, verifyToken }
