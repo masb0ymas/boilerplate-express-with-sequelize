@@ -10,6 +10,7 @@ boilerplate express with sequelize dirancang karna pengalaman pribadi maupun tim
   - [Model Schema Validation](#model-schema-validation)
   - [Mengatur Controller](#mengatur-controller)
   - [Mengatur Route](#mengatur-route)
+  - [Docs Swagger](#docs-swagger)
 
 # Instalasi
 
@@ -22,9 +23,9 @@ git clone https://github.com/masb0ymas/boilerplate-express-with-sequelize
 ```
 
 2. Duplikasi `.env.example`. menjadi `.env`.
-   
+
    Nah disini kamu harus atur dahulu koneksi ke databasenya dan pastikan kamu sudah ngintal database yg di perlukan, karna saya pake `Sequelize` kamu bisa lihat di dokumentasi nya database yang di support oleh [Sequelize](https://sequelize.org/v5/manual/getting-started.html)
-   
+
 3. Instal dependensi
 
 ```sh
@@ -62,7 +63,7 @@ yarn run serve:staging
 ```
 
 7. jalankan folder `dist/` mode `NODE_ENV=production`
-   
+
 ```bash
 yarn run serve:production
 ```
@@ -154,10 +155,11 @@ boilerplate-express-with-sequelize/
 ```
 
 Nah saya jelaskan sedikit fungsi-fungsi file tambahan yang powerful.
+
 - .babelrc
   berfungsi agar file di folder `dist` bisa jalan runtime browser. Serta bisa menggunakan [Babel Resolver](https://github.com/tleunen/babel-plugin-module-resolver)
 - .editorconfig
-  biasanya digunakan untuk config Text Editor, seperti: `VS Code`, `IntelliJ IDEA`, `Sublime Text 3`, dll. 
+  biasanya digunakan untuk config Text Editor, seperti: `VS Code`, `IntelliJ IDEA`, `Sublime Text 3`, dll.
 - .eslintrc.json
   nah ini yang sangat membantu saya karna style javascript nya lebih rapi dan good code.
 - .prettierrc.js
@@ -175,8 +177,9 @@ npx sequelize-cli model:generate --name User --attributes firstName:string,lastN
 ```
 
 penjelasan sedikit tentang `Sequelize CLI`
-- ---name Nama_Tabel
-- ---attributes field_Tabel:type_data
+
+- --name Nama_Tabel
+- --attributes field_Tabel:type_data
 
 setelah diatur migration dan model nya sesuai kebutuhan. sebagai contoh seperti ini
 
@@ -198,12 +201,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
-  Role.associate = function(models) {
+  Role.associate = function (models) {
     // associations can be defined here
   }
   return Role
 }
-
 ```
 
 ```javascript
@@ -288,7 +290,7 @@ setelah di atur `migration`, `models` dan `modelValidation` saatnya lanjut ke fo
 
 ## Mengatur Controller
 
-pada folder controller jika kamu mau bikin controller yang bersifat simpel atau sederhana, misalkan cuma CRUD, kamu tinggal nge wrapper controller kamu ke `SimpelMasterController`. 
+pada folder controller jika kamu mau bikin controller yang bersifat simpel atau sederhana, misalkan cuma CRUD, kamu tinggal nge wrapper controller kamu ke `SimpelMasterController`.
 
 Karna di `SimpleMasterController` sudah di atur semua, tinggal kirim parameter `models` dan `modelValidation`
 
@@ -304,7 +306,6 @@ import mvRole from '../models/validations/mvRole'
 const { Role } = models
 
 module.exports = SimpleMasterController(Role, mvRole)
-
 ```
 
 jika kamu ingin menambahkan `include Sequelize` atau custom function di controller kamu tanpa mengubah `SimpleMasterController`, yang kamu lakukan cuma nge replace function yg ada di `SimpleMasterController` atau sekedar ngatur options `configGetAll`, `configGetOne`, `configGetCreate`, ataupun `configGetUpdate`
@@ -330,13 +331,11 @@ module.exports = SimpleMasterController(User, mvUser, {
     include: including,
   },
 })
-
 ```
 
 atau bisa juga seperti ini :
 
 ```javascript
-
 import models from '../models'
 import SimpleMasterController from './base/SimpleMasterController'
 import mvUser from '../models/validations/mvUser'
@@ -364,7 +363,6 @@ module.exports = {
   ...baseController,
   create,
 }
-
 ```
 
 kalo kamu menulis kodingan seperti diatas, dia akan ngereplace function yang ada di `SimpleMasterController`
@@ -399,7 +397,7 @@ async function getAll({ req, ResponseError }) {
           RoleId: '',
         },
         transformValueByKey: {
-          RoleId: filterByApotek(roleId),
+          RoleId: filterByRole(roleId),
         },
       },
       optSort: {
@@ -420,46 +418,47 @@ Penjelasan lengkap tentang [Sequelice Query](https://github.com/chornos13/sequel
 Setelah kamu selesai membuat `model` dan `controller`, langkah selanjutnya kamu akan membuat `routing`, nah routing ini akan berguna nantinya saat kamu akses `endpoint route` nya, lalu endpoint route itu akan diarahkan ke `controller` yang kamu bikin.
 
 Nah disini ada 2 routing di folder route yakni :
-- admin.js
-- public.js
+
+- `./src/routes/private.js`
+- `./src/routes/public.js`
 
 `public.js` itu mengatur routing yang bisa di akses langsung dari luar, seperti `http://localhost:8000/v1/master-identitas` kalo di akses lewat browser langsung dia akan ngebaca method `GET`
 
-sedangkan `admin.js` endpoint routing yang di protect oleh beberapa `middleware`, seperti `middleware auth`, `middleware multer`, dan middleware lainnya sesuai kebutuhan kamu.
+sedangkan `private.js` endpoint routing yang di protect oleh beberapa `middleware`, seperti `middleware auth`, `middleware multer`, dan middleware lainnya sesuai kebutuhan kamu.
 
 cara bikin global middleware pada routing seperti berikut :
 
 ```javascript
 /* Setup Router */
 const router = express.Router()
-const apiAdmin = new UnoRouter(router, {
+const apiPrivate = new UnoRouter(router, {
   middleware: passport.authenticate('jwt', { session: false }),
   wrapperRequest,
 })
 ```
 
-contoh lengkap route admin.js
+contoh lengkap route private.js
 
 ```javascript
-// route/admin.js
+// route/private.js
 
 import express from 'express'
 import passport from 'passport'
 import { Router as UnoRouter } from 'uno-api'
-import { wrapperRequest } from '#helpers'
-import multerCSV from '#middleware'
+import { wrapperRequest } from 'helpers'
+import multerCSV from 'middleware'
 
 /* Setup Router */
 const router = express.Router()
-const apiAdmin = new UnoRouter(router, {
+const apiPrivate = new UnoRouter(router, {
   middleware: passport.authenticate('jwt', { session: false }),
   wrapperRequest,
 })
-require('#config/passport')(passport)
+require('config/passport')(passport)
 
-const RoleController = require('#controllers/RoleController')
+const RoleController = require('controllers/RoleController')
 
-apiAdmin.create({
+apiPrivate.create({
   baseURL: '/role',
   post: RoleController.create,
   putWithParam: [[':id', RoleController.update]],
@@ -476,7 +475,7 @@ import { Router as UnoRouter } from 'uno-api'
 
 ...
 
-apiAdmin.create({
+apiPrivate.create({
   baseURL: '/role',
   post: RoleController.create,
   putWithParam: [[':id', RoleController.update]],
@@ -487,4 +486,8 @@ apiAdmin.create({
 
 secara global / by default `overrideMiddleware: false`
 
-Disini kamu hanya ngewrapping middleware ke dalam `UnoRouter`, jadi nantinya yang menggunakan `apiAdmin` udah terpasang middleware, penjelasan lebih lanjut tentang [Uno API](https://github.com/chornos13/uno-api)
+Disini kamu hanya ngewrapping middleware ke dalam `UnoRouter`, jadi nantinya yang menggunakan `apiPrivate` udah terpasang middleware, penjelasan lebih lanjut tentang [Uno API](https://github.com/chornos13/uno-api)
+
+## Docs Swagger
+
+Docs swagger menggunakan `.json` dan sudah ke mapping otomatis di `./src/utils/GenerateDocs.js` kalo kamu mengubah docs swagger routes nya harus di restart manual `nodemon` nya.
