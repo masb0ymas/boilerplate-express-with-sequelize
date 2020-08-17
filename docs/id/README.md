@@ -75,83 +75,106 @@ Tujuan saya menaruh semuanya folder `src` agar babel nya bisa nge build folder `
 
 ```bash
 boilerplate-express-with-sequelize/
-  node_modules/
-  public/
-    images/
-    javascript/
-    stylesheets/
-  src/
-    bin/
-      server.js
-    config/
-      database.js
-      email.js
-      passport.js
-    constants/
-      ConstMasterTipeIdentitas.js
-      ConstModel.js
-      ConstRoles.js
-      index.js
-    controllers/
-      base/
-        SimpleMasterController.js
-      AuthController.js
-      MasterTipeIdentitasController.js
-      RoleController.js
-      UserController.js
-    helpers/
-      Common.js
-      ExpressHelpers.js
-      index.js
-      Multer.js
-      ObjectHelpers.js
-      SequeliceMigration.js
-      SequeliceSeed.js
-      SequeliceHelpers.js
-    middleware/
-      index.js
-      multerCSV.js
-    migrations/
-      20191214061950-create-user.js
-      20191214063429-create-role.js
-      20191218102531-create-master-tipe-identitas.js
-    models/
-      validations/
-        mvBaseMaster.js
-        mvRole.js
-        mvUser.js
-        xyup.js
-      index.js
-      master-tipe-identitas.js
-      role.js
-      user.js
-    routes/
-      admin.js
-      index.js
-      public.js
-    seeders/
-      20191214105446-seeder-role.js
-      20191219055811-master-tipe-identitas.js
-    utils/
-      Directory.js
-    app.js
-  views/
-    error.pug
-    index.pug
-    layout.pug
-  .babelrc
-  .editorconfig
-  .env.example
-  .eslintignore
-  .eslintrc.json
-  .gitignore
-  .prettierrc.js
-  .sequelizerc
-  jsconfig.json
-  LICENSE.md
-  package.json
-  README.md
-  yarn.lock
+  ├── node_modules/*
+  ├── dist/*
+  ├── LICENSE.md
+  ├── README.md
+  ├── docs
+  │   ├── id
+  │   │   └── README.md
+  │   └── swagger
+  │       └── routes
+  │           ├── auth.js
+  │           ├── master-tipe-identitas.js
+  │           ├── role.js
+  │           └── user.js
+  ├── ecosystem.config.js
+  ├── jsconfig.json
+  ├── package.json
+  ├── public
+  │   ├── stylesheets
+  │   │   └── style.css
+  │   └── uploads
+  │       ├── csv
+  │       └── profile
+  │           ├── d85e4bed-e91d-4d04-9f67-050beff68724
+  │           └── e366f9a1-b2f3-4294-b18e-946355e323e7
+  ├── src
+  │   ├── app.js
+  │   ├── bin
+  │   │   └── server.js
+  │   ├── config
+  │   │   ├── database.js
+  │   │   ├── email.js
+  │   │   ├── passport.js
+  │   │   └── redis.js
+  │   ├── constants
+  │   │   ├── ConstMasterTipeIdentitas.js
+  │   │   ├── ConstModel.js
+  │   │   ├── ConstRoles.js
+  │   │   └── index.js
+  │   ├── controllers
+  │   │   ├── AuthController.js
+  │   │   ├── MasterTipeIdentitasController.js
+  │   │   ├── RoleController.js
+  │   │   ├── UserController.js
+  │   │   └── base
+  │   │       └── SimpleMasterController.js
+  │   ├── helpers
+  │   │   ├── Common.js
+  │   │   ├── ExpressHelpers.js
+  │   │   ├── FilterHelpers.js
+  │   │   ├── Multer.js
+  │   │   ├── ObjectHelpers.js
+  │   │   ├── SequeliceMigration.js
+  │   │   ├── SequeliceSeed.js
+  │   │   ├── SequelizeHelpers.js
+  │   │   └── index.js
+  │   ├── middleware
+  │   │   ├── index.js
+  │   │   └── multerCSV.js
+  │   ├── migrations
+  │   │   ├── 20191214061950-create-user.js
+  │   │   ├── 20191214063429-create-role.js
+  │   │   └── 20191218102531-create-master-tipe-identitas.js
+  │   ├── models
+  │   │   ├── index.js
+  │   │   ├── master-tipe-identitas.js
+  │   │   ├── role.js
+  │   │   ├── user.js
+  │   │   └── validations
+  │   │       ├── mvBaseMaster.js
+  │   │       ├── mvRole.js
+  │   │       ├── mvUser.js
+  │   │       └── xyup.js
+  │   ├── modules
+  │   │   ├── Errors
+  │   │   │   ├── BadRequest.js
+  │   │   │   ├── BaseResponse.js
+  │   │   │   ├── Forbidden.js
+  │   │   │   ├── NotFound.js
+  │   │   │   └── Unauthorized.js
+  │   │   └── ResponseError.js
+  │   ├── routes
+  │   │   ├── index.js
+  │   │   ├── private.js
+  │   │   └── public.js
+  │   ├── scripts
+  │   │   └── generateEnvJWT.js
+  │   ├── seeders
+  │   │   ├── 20191214105446-seeder-role.js
+  │   │   └── 20191219055811-master-tipe-identitas.js
+  │   └── utils
+  │       ├── Directory.js
+  │       ├── GenerateDocs.js
+  │       ├── GenerateInvoice.js
+  │       ├── ReaderMigrationSequelize.js
+  │       └── SequelizeAttributes.js
+  ├── views
+  │   ├── error.pug
+  │   ├── index.pug
+  │   └── layout.pug
+  └── yarn.lock
 ```
 
 Nah saya jelaskan sedikit fungsi-fungsi file tambahan yang powerful.
