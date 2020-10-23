@@ -5319,10 +5319,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-swagger-jsdoc@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/swagger-jsdoc/-/swagger-jsdoc-4.3.0.tgz#75425d7efc94bcb50f00d6c479655e35cd5a86ba"
-  integrity sha512-hR8DRt5JYguoXhZ0PeFR0dCqtMAr1yc5GIb6pu7HzZqcy/BYfSNdIDn9S1muhyDDRRc5K3g8nHEs3PjdhvSUzg==
+swagger-jsdoc@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/swagger-jsdoc/-/swagger-jsdoc-4.3.1.tgz#cce73c64fb3fcca11903f4f694bce92f02dbcf6c"
+  integrity sha512-oRp8uQEWQPnH/WSWgbZYJpsWEYF62V2rQiTHSUGo8x07E0cJYffXu5z1lCKx/PpBoJzrui1xeuqRX6OzhDxZtA==
   dependencies:
     commander "6.1.0"
     doctrine "3.0.0"
