@@ -3563,10 +3563,10 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-mariadb@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/mariadb/-/mariadb-2.5.0.tgz#b9473e91ca07907cd4d3106a975240a82a5b0a4c"
-  integrity sha512-hrCv/xy12LYzGe6BzcK7awP1SN1bdMf7IBCHwmcMhpY7f6yyv/578sE7+fHbV7YiTxDcNGkgtXNI8tGuM9HCIQ==
+mariadb@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/mariadb/-/mariadb-2.5.1.tgz#46fd8773b6320eef535b895dae6374781194b6f6"
+  integrity sha512-LPm/1qXKLdMX16WOalAQAf93JtApW8z3NXq38BKlSUfjkb/VyXW4VjckmNChmC2Ypouba1SY/3mCOW+6nT6vvQ==
   dependencies:
     "@types/geojson" "^7946.0.7"
     "@types/node" "^14.11.2"
