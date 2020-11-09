@@ -1571,10 +1571,10 @@ color-name@~1.1.4:
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
-commander@6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-6.1.0.tgz#f8d722b78103141006b66f4c7ba1e97315ba75bc"
-  integrity sha512-wl7PNrYWd2y5mp1OK/LhTlv8Ff4kQJQRXXAvF+uU/TPNiVJUxZLRYGj/B0y/lPGAVcSbJqH2Za/cvHmrPMC8mA==
+commander@6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.0.tgz#b990bfb8ac030aedc6d11bc04d1488ffef56db75"
+  integrity sha512-zP4jEKbe8SHzKJYQmq8Y9gYjtO/POJLgIdKgV7B9qNmABVFVc+ctqSX6iXh4mCpJfRBOabiZ2YKPg8ciDw6C+Q==
 
 commander@^2.19.0, commander@^2.7.1:
   version "2.20.3"
@@ -5319,12 +5319,12 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-swagger-jsdoc@^4.3.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/swagger-jsdoc/-/swagger-jsdoc-4.3.1.tgz#cce73c64fb3fcca11903f4f694bce92f02dbcf6c"
-  integrity sha512-oRp8uQEWQPnH/WSWgbZYJpsWEYF62V2rQiTHSUGo8x07E0cJYffXu5z1lCKx/PpBoJzrui1xeuqRX6OzhDxZtA==
+swagger-jsdoc@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/swagger-jsdoc/-/swagger-jsdoc-5.0.1.tgz#82686540d86fd4ed9b2c48b313709a4b90811f55"
+  integrity sha512-Yxrulj5E2dY9HUHjryckFPG66YTwi8pih80pocNacGAojE8J7eN99Cx7NLQx+8sV2C3cnFVbrYVISCLpgmb6aA==
   dependencies:
-    commander "6.1.0"
+    commander "6.2.0"
     doctrine "3.0.0"
     glob "7.1.6"
     js-yaml "3.14.0"
