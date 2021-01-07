@@ -16,6 +16,8 @@
 
 > Just boilerplate Express with Sequelize ORM
 
+## NOTE: this boilerplate is has now moved into the [boilerplate-express-typescript-sequelize](https://github.com/masb0ymas/boilerplate-express-typescript-sequelize).
+
 ### 🏠 [Homepage](https://github.com/masb0ymas/boilerplate-express-with-sequelize)
 
 ## Prerequisites
